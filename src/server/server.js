@@ -14,7 +14,7 @@ const cors = require('cors')
 app.use(cors())
 
 //select folder for express to point to
-app.use(express.static('src/client/views'))
+app.use(express.static('dist'))
 
 //port to use for localhost
 app.listen(3000, () => {
