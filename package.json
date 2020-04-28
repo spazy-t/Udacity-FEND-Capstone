@@ -1,0 +1,17 @@
+{
+  "name": "travel-app",
+  "version": "1.0.0",
+  "description": "Web app using multiple api's to plan a trip",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "start": "node src/server/server.js"
+  },
+  "author": "Tom Schrimshaw",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
