@@ -7,10 +7,10 @@
     </head>
     <body>
         <div class="form-container">
-            <form>
+            <form onsubmit="return Client.handleSubmit(event)">
                 <input type="text" id="city" placeholder="Enter city">
-                <input type="date" id="trip-date">
-                <input type="button" value="Find" id="submit-form">
+                <input type="date" id="trip-date" required pattern="\d{4}-\d{2}-\d{2}">
+                <input type="submit" value="Find" id="submit-form" onsubmit="return Client.handleSubmit(event)">
             </form>
         </div>
     </body>
