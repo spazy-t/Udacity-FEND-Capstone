@@ -1,5 +1,5 @@
 //import js files
-import { getGeo } from './js/geoHandler'
+import { handleApi } from './js/apiHandler'
 import { handleSubmit } from './js/formHandler'
 import './js/app'
 
@@ -8,6 +8,6 @@ import './styles/base.scss'
 
 //export functions to use in app
 export {
-    getGeo,
+    handleApi,
     handleSubmit
 }
