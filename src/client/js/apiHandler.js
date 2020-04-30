@@ -1,3 +1,4 @@
+//TODO:get place from formHandler
 const geoPlace = 'Wakefield'
 //TODO:later you'll want to store just the original date and parsed destination
 function handleApi(date) {
@@ -9,6 +10,9 @@ function handleApi(date) {
 
 //parses the data returned from the geo api
 function parseData(tripData, date) {
+
+    //TODO: run through options and find the one 
+    //that matches country from user?
     
     const displayData = {
         city: tripData.geonames[0].name,
