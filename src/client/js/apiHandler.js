@@ -1,10 +1,22 @@
 const geoPlace = 'Wakefield'
-
+//TODO:later you'll want to store just the original date and parsed destination
 function handleApi(date) {
     getGeo()
     .then((data) => {
-        console.log(data.geonames[0] + ' date: ' + date)
+        parseData(data, date)
     })
+}
+
+//parses the data returned from the geo api
+function parseData(tripData, date) {
+    
+    const displayData = {
+        city: tripData.geonames[0].name,
+        country: tripData.geonames[0].countryName,
+        departure: date
+    }
+
+    Client.displayTrip(displayData)
 }
 
 //initial call to geonames api in server
