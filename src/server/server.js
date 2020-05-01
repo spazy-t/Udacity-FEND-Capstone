@@ -52,8 +52,8 @@ app.get('/geo/:place', (req, res) => {
 })
 
 //https://www.npmjs.com/package/@datafire/weatherbit 1/05/2020
-//caall to weatherBit api for current weather
-app.get('/weather/:lat-:lng', (req, res) => {
+//call to weatherBit api for current weather
+app.get('/current/:lat-:lng', (req, res) => {
     const lat = req.params.lat
     const lng = req.params.lng
     
@@ -63,7 +63,27 @@ app.get('/weather/:lat-:lng', (req, res) => {
         key: process.env.WB_KEY
     })
     .then((data) => {
-        console.log('weatherbit data')
+        console.log('weatherbit current data')
+        console.log(data)
+        res.send(data)
+    })
+    .catch((error) => {
+        console.log('error', error)
+    })
+})
+
+//call to get future forecast
+app.get('/forecast/:lat-:lng', (req, res) => {
+    const lat = req.params.lat
+    const lng = req.params.lng
+    
+    weatherbit.forecast.daily_lat_lat_lon_lon.get({
+        lat: Number(lat),
+        lon: Number(lng),
+        key: process.env.WB_KEY
+    })
+    .then((data) => {
+        console.log('weatherbit forecast data')
         console.log(data)
         res.send(data)
     })

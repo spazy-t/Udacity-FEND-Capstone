@@ -4,10 +4,11 @@ let displayData = {}
 function handleApi(date, place) {
     getGeo(place)
     .then((data) => {
-        parseData(data, date)
+        parseGeoData(data, date)
     })
     .then(() => {
-        getWeather(displayData.lat, displayData.lng)
+        const departureDays = Client.daysToGo(date)
+        getWeather(displayData.lat, displayData.lng, departureDays)
     })
     .catch(err => {
         alert('destination not found, please check and try again')
@@ -15,7 +16,7 @@ function handleApi(date, place) {
 }
 
 //parses the data returned from the geo api
-function parseData(tripData, date) {
+function parseGeoData(tripData, date) {
 
     //TODO: run through options and find the one 
     //that matches country from user?
@@ -34,8 +35,14 @@ function parseData(tripData, date) {
 }
 
 //call to server get WeatherBit function
-const getWeather = async (lat, lng) => {
-    const res = await fetch(`http://localhost:3000/weather/${lat}-${lng}`)
+const getWeather = async (lat, lng, departure) => {
+    let res
+    //determine if future or current weather is needed from api
+    if(departure < 7) {
+        res = await fetch(`http://localhost:3000/current/${lat}-${lng}`)
+    } else {
+        res = await fetch(`http://localhost:3000/forecast/${lat}-${lng}`)
+    }
 
     try {
         const wbData = await res.json()

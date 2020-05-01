@@ -2,7 +2,7 @@
 import { handleApi } from './js/apiHandler'
 import { handleSubmit } from './js/formHandler'
 import { displayTrip } from './js/app'
-import './js/app'
+import { daysToGo } from './js/app'
 
 //import css
 import './styles/base.scss'
@@ -11,5 +11,6 @@ import './styles/base.scss'
 export {
     handleApi,
     handleSubmit,
-    displayTrip
+    displayTrip,
+    daysToGo
 }

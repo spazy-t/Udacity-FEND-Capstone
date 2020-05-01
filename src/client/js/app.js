@@ -23,3 +23,4 @@ function daysToGo(date) {
 }
 
 export { displayTrip }
+export { daysToGo }
