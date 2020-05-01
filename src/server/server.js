@@ -1,4 +1,5 @@
 const GeocoderGeonames = require('geocoder-geonames')
+const weatherbit = require('@datafire/weatherbit').create()
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -42,6 +43,27 @@ app.get('/geo/:place', (req, res) => {
         maxRows: 5
     })
     .then((data) => {
+        console.log(data)
+        res.send(data)
+    })
+    .catch((error) => {
+        console.log('error', error)
+    })
+})
+
+//https://www.npmjs.com/package/@datafire/weatherbit 1/05/2020
+//caall to weatherBit api for current weather
+app.get('/weather/:lat-:lng', (req, res) => {
+    const lat = req.params.lat
+    const lng = req.params.lng
+    
+    weatherbit.current_lat_lat_lon_lon.get({
+        lat: Number(lat),
+        lon: Number(lng),
+        key: process.env.WB_KEY
+    })
+    .then((data) => {
+        console.log('weatherbit data')
         console.log(data)
         res.send(data)
     })
