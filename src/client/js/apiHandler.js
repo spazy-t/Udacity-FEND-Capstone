@@ -1,10 +1,11 @@
-//TODO:get place from formHandler
-const geoPlace = 'Wakefield'
 //TODO:later you'll want to store just the original date and parsed destination
-function handleApi(date) {
-    getGeo()
+function handleApi(date, place) {
+    getGeo(place)
     .then((data) => {
         parseData(data, date)
+    })
+    .catch(err => {
+        alert('destination not found, please check and try again')
     })
 }
 
@@ -24,8 +25,8 @@ function parseData(tripData, date) {
 }
 
 //initial call to geonames api in server
-const getGeo = async () => {
-    const res = await fetch('http://localhost:3000/geo/'+geoPlace)
+const getGeo = async (dest) => {
+    const res = await fetch('http://localhost:3000/geo/'+dest)
 
     try {
         const data = await res.json()

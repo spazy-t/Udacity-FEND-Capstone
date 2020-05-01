@@ -4,10 +4,17 @@
     align-items: center;
 
     form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin: 50px 0;
 
         #submit-form {
             cursor: pointer;
+        }
+
+        input {
+            margin-bottom: 25px;
         }
     }
 }
@@ -18,4 +25,8 @@ section {
         flex-direction: column;
         align-items: center;
     }
+}
+
+.box {
+    border: 1px solid red;
 }

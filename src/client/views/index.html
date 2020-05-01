@@ -7,13 +7,15 @@
     </head>
     <body>
         <div class="form-container">
-            <form onsubmit="return Client.handleSubmit(event)">
+            <form onsubmit="return Client.handleSubmit(event)" class="box">
+                <label for="city">Enter destination</label>
                 <input type="text" id="city" placeholder="Enter city">
+                <label for="trip-date">Enter depature date</label>
                 <input type="date" id="trip-date" required pattern="\d{4}-\d{2}-\d{2}">
                 <input type="submit" value="Find" id="submit-form" onsubmit="return Client.handleSubmit(event)">
             </form>
         </div>
-        <section class="trip-info">
+        <section class="trip-info box">
             <div class="destination"></div>
             <div class="countdown"></div>
         </section>

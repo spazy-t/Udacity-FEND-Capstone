@@ -3,8 +3,14 @@ function handleSubmit(evt) {
     //TODO: validate date as if just text not date input
     //grab date from form 
     const tripDate = document.querySelector('#trip-date').value
+    const tripDest = document.querySelector('#city').value
 
-    Client.handleApi(tripDate)
+    if (tripDest === '') {
+        alert('Please enter a destination')
+        return
+    }
+
+    Client.handleApi(tripDate, tripDest)
 }
 
 export { handleSubmit }
