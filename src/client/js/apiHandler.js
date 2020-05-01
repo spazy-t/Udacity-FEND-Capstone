@@ -9,10 +9,23 @@ function handleApi(date, place) {
     .then(() => {
         const departureDays = Client.daysToGo(date)
         getWeather(displayData.lat, displayData.lng, departureDays)
+        .then((weather) => {
+            parseWeather(weather)
+        })
     })
     .catch(err => {
         alert('destination not found, please check and try again')
     })
+}
+
+//TODO: parse weather data, dependent on current or forecast
+function parseWeather(wData) {
+    //if returned data has a 'count' field = current weather
+    if (wData.count != undefined) {
+        console.log('current weather')
+    } else {
+        console.log('forecast weather')
+    }
 }
 
 //parses the data returned from the geo api
@@ -30,8 +43,6 @@ function parseGeoData(tripData, date) {
     }
 
     Client.displayTrip(displayData)
-
-    return displayData
 }
 
 //call to server get WeatherBit function
