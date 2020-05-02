@@ -22,5 +22,8 @@ function daysToGo(date) {
     return daysToGo
 }
 
+//TODO: if formHandler - textfallback is called set a boolean to true so you can run an if statement
+//in checkDate to convert string date from dd/mm/yyyy => yyyy-mm-dd?
+
 export { displayTrip }
 export { daysToGo }

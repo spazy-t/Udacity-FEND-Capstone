@@ -1,6 +1,7 @@
 //import js files
 import { handleApi } from './js/apiHandler'
 import { handleSubmit } from './js/formHandler'
+import { textFallBack } from './js/formHandler'
 import { displayTrip } from './js/app'
 import { daysToGo } from './js/app'
 
@@ -12,5 +13,16 @@ export {
     handleApi,
     handleSubmit,
     displayTrip,
-    daysToGo
+    daysToGo,
+    textFallBack
+}
+
+//event listeners
+window.onload = () => {
+    document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
+
+    if(document.querySelector('#trip-date').type === 'text') {
+        Client.textFallBack()
+        //TODO:set boolean in app.js to true so passed date can be converted
+    }
 }
