@@ -1,3 +1,6 @@
+//initial false boolean to be set true when input falls back to text input
+let textDateInput = false
+
 //takes in parsed data from apiHandler
 function displayTrip(parsedData) {
     const dest = document.querySelector('.destination')
@@ -13,6 +16,13 @@ function displayTrip(parsedData) {
 //find out how many days to go between today and date given
 //found formula @ https://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates
 function daysToGo(date) {
+    //if date input falls back to text then perform needed conversion of input
+    if (textDateInput) {
+        const replaceReg = /\//gi
+        date = date.replace(replaceReg, '-')
+        date = date.split('-').reverse().join('-')
+    }
+
     const oneDay = 24 * 60 * 60 * 1000
     const today = new Date()
     const tripDay = new Date(date)
@@ -22,8 +32,12 @@ function daysToGo(date) {
     return daysToGo
 }
 
-//TODO: if formHandler - textfallback is called set a boolean to true so you can run an if statement
+//if formHandler - textfallback is called set a boolean to true so you can run an if statement
 //in checkDate to convert string date from dd/mm/yyyy => yyyy-mm-dd?
+function textTruthy() {
+    textDateInput = true
+}
 
+export { textTruthy }
 export { displayTrip }
 export { daysToGo }
