@@ -13,9 +13,9 @@ function handleApi(date, place) {
             parseWeather(weather)
         })
     })
-    .catch(err => {
+    /*.catch(err => {
         alert('destination not found, please check and try again')
-    })
+    })*/
 }
 
 //TODO: parse weather data, dependent on current or forecast

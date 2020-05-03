@@ -8,6 +8,8 @@ import { textTruthy } from './js/app'
 
 //import css
 import './styles/base.scss'
+import './styles/global.scss'
+import './styles/weather-display.scss'
 
 //export functions to use in app
 export {

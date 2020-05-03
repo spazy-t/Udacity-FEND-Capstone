@@ -3,7 +3,7 @@ let textDateInput = false
 
 //takes in parsed data from apiHandler
 function displayTrip(parsedData) {
-    const dest = document.querySelector('.destination')
+    const dest = document.querySelector('.dest')
     const countDown = document.querySelector('.countdown')
     //determines countdown days
     const countDownNum = daysToGo(parsedData.departure)
