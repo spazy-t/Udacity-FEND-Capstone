@@ -20,12 +20,25 @@ function handleApi(date, place) {
 
 //TODO: parse weather data, dependent on current or forecast
 function parseWeather(wData) {
+    let weatherDay
+    //grab relevant dom objects to populate
+    const weatherDesc = document.querySelector('#desc')
+    const weatherTemp = document.querySelector('#temp')
+    const weatherDir = document.querySelector('#wind-dir')
     //if returned data has a 'count' field = current weather
     if (wData.count != undefined) {
         console.log('current weather')
+        weatherDay = wData.data[0]
     } else {
         console.log('forecast weather')
+        weatherDay = wData.data[wData.data.length - 1]
     }
+
+    //populate dom elements
+    weatherDesc.innerHTML = weatherDay.weather.description
+    weatherTemp.innerHTML = weatherDay.temp
+    weatherDir.innerHTML = weatherDay.wind_cdir
+
 }
 
 //parses the data returned from the geo api
