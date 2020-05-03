@@ -91,3 +91,5 @@ app.get('/forecast/:lat-:lng', (req, res) => {
         console.log('error', error)
     })
 })
+
+module.exports =  { app }
