@@ -1,5 +1,6 @@
 const GeocoderGeonames = require('geocoder-geonames')
 const weatherbit = require('@datafire/weatherbit').create()
+const PixabayApi = require('node-pixabayclient')
 
 const dotenv = require('dotenv')
 dotenv.config()
@@ -23,6 +24,9 @@ app.use(cors())
 const geoApi = new GeocoderGeonames({
     username: process.env.GEO_USERNAME,
 })
+
+//setup pixabayclient (https://github.com/rdev5/node-pixabayclient) 04/05/2020
+const PixabayPhotos = new PixabayApi({apiUrl: 'https://pixabay.com/api/'})
 
 //select folder for express to point to
 app.use(express.static('dist'))
@@ -84,11 +88,43 @@ app.get('/forecast/:lat-:lng', (req, res) => {
     })
     .then((data) => {
         console.log('weatherbit forecast data')
-        console.log(data)
+        //console.log(data)
         res.send(data)
     })
     .catch((error) => {
         console.log('error', error)
+    })
+})
+
+//collect body info from apiHandler request and use for pixabay request
+app.post('/pixaApi', (req, response) => {
+    const city = req.body.city
+    const country = req.body.country
+    const params = {
+        key: process.env.PIXA_KEY,
+        q: `${city} ${country}`,
+        image_type: 'photo'
+    }
+
+    PixabayPhotos.query(params, (err, res, req) => {
+        if(err) {
+            console.log('error', err)
+            return
+        }
+
+        if (res.totalHits === 0) {
+            params.q = `${country}`
+            PixabayPhotos.query(params, (err, resTwo, reqTwo) => {
+                if (err) {
+                    console.log('error', err)
+                    return
+                } else {
+                    response.send(resTwo)
+                } 
+            })
+        } else {
+            response.send(res)
+        }
     })
 })
 

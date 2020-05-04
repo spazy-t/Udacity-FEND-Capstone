@@ -13,6 +13,12 @@ function handleApi(date, place) {
             parseWeather(weather)
         })
     })
+    .then(() => {
+        getImage('http://localhost:3000/pixaApi', {
+            city: displayData.city,
+            country: displayData.country
+        })
+    })
     /*.catch(err => {
         alert('destination not found, please check and try again')
     })*/
@@ -83,6 +89,25 @@ const getGeo = async (dest) => {
     try {
         const data = await res.json()
         return data
+    } catch (e){
+        console.log('error', e)
+    }
+}
+
+const getImage = async(url = '', data = {}) => {
+    const res = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+
+    try {
+        const data = await res.json()
+        console.log('get Image')
+        console.log(data)
     } catch (e){
         console.log('error', e)
     }
