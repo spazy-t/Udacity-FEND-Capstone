@@ -105,14 +105,14 @@ app.post('/pixaApi', (req, response) => {
         q: `${city} ${country}`,
         image_type: 'photo'
     }
-
+    //place api query in nested function so it can be called again if not images returned
     function queryPixa() {
         PixabayPhotos.query(params, (err, res, req) => {
             if(err) {
                 console.log('error', err)
                 return
             }
-
+            //if not images then change params and try again
             if (res.totalHits === 0) {
                 params.q = `${country}`
                 queryPixa()
@@ -125,4 +125,4 @@ app.post('/pixaApi', (req, response) => {
     queryPixa()
 })
 
-module.exports =  { app }
+module.exports = { app }

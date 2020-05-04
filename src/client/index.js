@@ -4,7 +4,8 @@ import { handleSubmit } from './js/formHandler'
 import { textFallBack } from './js/formHandler'
 import { displayTrip } from './js/app'
 import { daysToGo } from './js/app'
-import { textTruthy } from './js/app'
+import { displayImage } from './js/app'
+import { init } from './js/app'
 
 //import css
 import './styles/base.scss'
@@ -18,17 +19,8 @@ export {
     displayTrip,
     daysToGo,
     textFallBack,
-    textTruthy
+    displayImage
 }
 
 //event listeners
-window.onload = () => {
-    document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
-
-    if(document.querySelector('#trip-date').type === 'text') {
-        //sets placeholder text to prompt correct date format
-        Client.textFallBack()
-        //set boolean in app.js to true so passed date can be converted
-        Client.textTruthy()
-    }
-}
+window.addEventListener('DOMContentLoaded', init)

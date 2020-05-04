@@ -18,10 +18,13 @@ function handleApi(date, place) {
             city: displayData.city,
             country: displayData.country
         })
+        .then((imageData) => {
+            parseImageData(imageData)
+        })
     })
-    /*.catch(err => {
+    .catch(err => {
         alert('destination not found, please check and try again')
-    })*/
+    })
 }
 
 //TODO: parse weather data, dependent on current or forecast
@@ -60,8 +63,16 @@ function parseGeoData(tripData, date) {
         lat: tripData.geonames[0].lat,
         lng: tripData.geonames[0].lng
     }
-
+    //send to app.js to display
     Client.displayTrip(displayData)
+}
+
+//parse image data and grab a url to use
+function parseImageData(imageArr) {
+    const imageUrl = imageArr.hits[0].webformatURL
+    displayData.image = imageUrl
+    //send image url to app.js to display
+    Client.displayImage(imageUrl)
 }
 
 //call to server get WeatherBit function
@@ -90,10 +101,10 @@ const getGeo = async (dest) => {
         const data = await res.json()
         return data
     } catch (e){
-        console.log('error', e)
+        console.log('error > getGeo', e)
     }
 }
-
+//send post request for image with country and city info
 const getImage = async(url = '', data = {}) => {
     const res = await fetch(url, {
         method: 'POST',
@@ -108,6 +119,7 @@ const getImage = async(url = '', data = {}) => {
         const data = await res.json()
         console.log('get Image')
         console.log(data)
+        return data
     } catch (e){
         console.log('error', e)
     }
