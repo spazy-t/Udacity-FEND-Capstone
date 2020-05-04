@@ -106,26 +106,23 @@ app.post('/pixaApi', (req, response) => {
         image_type: 'photo'
     }
 
-    PixabayPhotos.query(params, (err, res, req) => {
-        if(err) {
-            console.log('error', err)
-            return
-        }
+    function queryPixa() {
+        PixabayPhotos.query(params, (err, res, req) => {
+            if(err) {
+                console.log('error', err)
+                return
+            }
 
-        if (res.totalHits === 0) {
-            params.q = `${country}`
-            PixabayPhotos.query(params, (err, resTwo, reqTwo) => {
-                if (err) {
-                    console.log('error', err)
-                    return
-                } else {
-                    response.send(resTwo)
-                } 
-            })
-        } else {
-            response.send(res)
-        }
-    })
+            if (res.totalHits === 0) {
+                params.q = `${country}`
+                queryPixa()
+            } else {
+                response.send(res)
+            }
+        })
+    }
+
+    queryPixa()
 })
 
 module.exports =  { app }
