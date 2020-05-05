@@ -16,7 +16,8 @@ function handleSubmit(evt) {
         return
     }
 
-    Client.handleApi(tripDate, tripDest)
+    Client.tripDeets.departure = tripDate
+    Client.handleApi(tripDest)
 }
 
 //see if date matches required format, mainly for date input fallback to text

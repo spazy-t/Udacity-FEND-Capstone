@@ -1,6 +1,16 @@
-//TODO: create object for trip here with all dest info instead of in apiHandler.
 //initial false boolean to be set true when input falls back to text input
 let textDateInput = false
+
+//global object to hold trip details
+let tripDeets = {  
+    city: '',
+    country: '',
+    lat: '',
+    lang: '',
+    departure: '',
+    image: '',
+    weather: {}
+}
 
 function init() {
     document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
@@ -13,22 +23,29 @@ function init() {
     }
 }
 
-//takes in parsed data from apiHandler
-function displayTrip(parsedData) {
+//called from apiHandler to display stored data after all api calls
+function displayTrip() {
+    //grab dom elements
     const dest = document.querySelector('.dest')
     const countDown = document.querySelector('.countdown')
-    //determines countdown days
-    const countDownNum = daysToGo(parsedData.departure)
-    //poulates dom elements
-    dest.innerHTML = `${parsedData.city}, ${parsedData.country}`
-    countDown.innerHTML = countDownNum
-}
+    const weatherDesc = document.querySelector('#desc')
+    const tempDegs = document.querySelector('#temp')
+    const windDir = document.querySelector('#wind-dir')
 
-//image url passed from apiHandler used to display destination image
-function displayImage(imageUrl) {
-    console.log('app.js > displayImage: '+imageUrl)
+    //determines countdown days
+    const countDownNum = daysToGo(tripDeets.departure)
+
+    //poulates dom elements
+    dest.innerHTML = `${tripDeets.city}, ${tripDeets.country}`
+    countDown.innerHTML = countDownNum
+    weatherDesc.innerHTML = tripDeets.weather.desc
+    tempDegs.innerHTML = tripDeets.weather.temp
+    windDir.innerHTML = tripDeets.weather.wind
+
+    //display image from stored url
+    console.log('app.js > displayImage: '+tripDeets.image)
     const imgTag = document.querySelector('.dest-img')
-    imgTag.setAttribute('src', imageUrl)
+    imgTag.setAttribute('src', tripDeets.image)
 }
 
 //TODO: use again later when recalling saved trips to recalculate countdown
@@ -57,7 +74,7 @@ function textTruthy() {
     textDateInput = true
 }
 
-export { init }
 export { displayTrip }
+export { tripDeets }
+export { init }
 export { daysToGo }
-export { displayImage }

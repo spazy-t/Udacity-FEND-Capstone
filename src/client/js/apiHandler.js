@@ -1,25 +1,28 @@
-let displayData = {}
-
 //TODO:later you'll want to store just the original date and parsed destination
-function handleApi(date, place) {
+function handleApi(place) {
+    const tripGlobal = Client.tripDeets
+
     getGeo(place)
     .then((data) => {
-        parseGeoData(data, date)
+        parseGeoData(data)
     })
     .then(() => {
-        const departureDays = Client.daysToGo(date)
-        getWeather(displayData.lat, displayData.lng, departureDays)
+        const departureDays = Client.daysToGo(tripGlobal.departure)
+        getWeather(departureDays)
         .then((weather) => {
             parseWeather(weather)
         })
-    })
-    .then(() => {
-        getImage('http://localhost:3000/pixaApi', {
-            city: displayData.city,
-            country: displayData.country
-        })
-        .then((imageData) => {
-            parseImageData(imageData)
+        .then(() => {
+            getImage('http://localhost:3000/pixaApi', {
+                city: tripGlobal.city,
+                country: tripGlobal.country
+            })
+            .then((imageData) => {
+                parseImageData(imageData)
+            })
+            .then(() => {
+                Client.displayTrip()
+            })
         })
     })
     .catch(err => {
@@ -27,13 +30,11 @@ function handleApi(date, place) {
     })
 }
 
-//TODO: parse weather data, dependent on current or forecast
+//passed weatherBit api data is parsed and relevant bits sent to global obj
 function parseWeather(wData) {
     let weatherDay
-    //grab relevant dom objects to populate
-    const weatherDesc = document.querySelector('#desc')
-    const weatherTemp = document.querySelector('#temp')
-    const weatherDir = document.querySelector('#wind-dir')
+    const tripWeather = {}
+    
     //if returned data has a 'count' field = current weather
     if (wData.count != undefined) {
         console.log('current weather')
@@ -43,41 +44,40 @@ function parseWeather(wData) {
         weatherDay = wData.data[wData.data.length - 1]
     }
 
-    //populate dom elements
-    weatherDesc.innerHTML = weatherDay.weather.description
-    weatherTemp.innerHTML = weatherDay.temp
-    weatherDir.innerHTML = weatherDay.wind_cdir
+    //populate current weather obj
+    tripWeather.desc = weatherDay.weather.description
+    tripWeather.temp = weatherDay.temp
+    tripWeather.wind = weatherDay.wind_cdir
 
+    //pass into global trip details obj
+    Client.tripDeets.weather = tripWeather
 }
 
 //parses the data returned from the geo api
-function parseGeoData(tripData, date) {
+function parseGeoData(tripData) {
 
     //TODO: run through options and find the one 
     //that matches country from user?
+
+    const tripGlobal = Client.tripDeets
     
-    displayData = {
-        city: tripData.geonames[0].name,
-        country: tripData.geonames[0].countryName,
-        departure: date,
-        lat: tripData.geonames[0].lat,
-        lng: tripData.geonames[0].lng
-    }
-    //send to app.js to display
-    Client.displayTrip(displayData)
+    tripGlobal.city = tripData.geonames[0].name,
+    tripGlobal.country = tripData.geonames[0].countryName,
+    tripGlobal.lat = tripData.geonames[0].lat,
+    tripGlobal.lng = tripData.geonames[0].lng
 }
 
 //parse image data and grab a url to use
 function parseImageData(imageArr) {
     const imageUrl = imageArr.hits[0].webformatURL
-    displayData.image = imageUrl
-    //send image url to app.js to display
-    Client.displayImage(imageUrl)
+    Client.tripDeets.image = imageUrl
 }
 
 //call to server get WeatherBit function
-const getWeather = async (lat, lng, departure) => {
+const getWeather = async (departure) => {
     let res
+    const lat = Client.tripDeets.lat
+    const lng = Client.tripDeets.lng
     //determine if future or current weather is needed from api
     if(departure < 7) {
         res = await fetch(`http://localhost:3000/current/${lat}-${lng}`)
