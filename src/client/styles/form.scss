@@ -1,0 +1,55 @@
+form {
+    display: grid;
+    padding-top: 25px;
+    background: rgba($color: #000000, $alpha: 0.4);
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "lb1 inptOne"
+    "lb2 inptTwo"
+    "sub sub";
+
+    #submit-form {
+        cursor: pointer;
+        grid-area: sub;
+    }
+
+    #trip-date {
+        grid-area: inptTwo;
+    }
+
+    #city {
+        grid-area: inptOne;
+    }
+
+    input {
+        margin: 0 10px 25px 0;
+        background: none;
+        font-family: inherit;
+        font-weight: 700;
+        border-bottom: 1px solid black;
+
+        &[type=submit] {
+            margin: 0 10px 15px 10px;
+            border: 4px solid black;
+            border-radius: 1em;
+            font-weight: 900;
+            text-transform: uppercase;
+
+            &:hover {
+                border-style: double;
+            }
+
+            &:active {
+                border-style: solid;
+                color: white;
+                background: black;
+            }
+        }
+    }
+
+    label {
+        text-align: left;
+        margin-left: 10px;
+    }
+}

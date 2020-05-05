@@ -6,35 +6,43 @@
         <title>Travel planner</title>
     </head>
     <body>
-        <div class="form-container">
-            <form class="box">
-                <label for="city">Enter destination</label>
+        <header>This is a header</header>
+        <main>
+            <form>
+                <label for="city">Destination:</label>
                 <input type="text" id="city" placeholder="Enter city">
-                <label for="trip-date">Enter depature date</label>
+                <label for="trip-date">Date:</label>
                 <input type="date" id="trip-date" required pattern="\d{4}-\d{2}-\d{2}">
-                <input type="submit" value="Find" id="submit-form">
+                <input type="submit" value="Search Trip" id="submit-form">
             </form>
-        </div>
-        <section class="trip-info box">
-            <img class="dest-img">
-            <label for="dest">Destination</label>
-            <div class="dest"></div>
-            <label for="countdown">Days till departure:</label>
-            <div class="countdown"></div>
-            <section class="dest-weather box">
-                <div class="info-container">
-                    <label for="desc">Weather desciption:</label>
-                    <div id="desc"></div>
+            <section class="trip-info">
+                <img class="dest-img" src="https://pixabay.com/get/54e0d44a495bb10ff3d8992cc62e3479173ddde74e5074417d2972d09144c1_640.jpg">
+                <div id="time-place">
+                    <div class="info-container">
+                        <label for="dest">Destination:</label>
+                        <div class="dest">Berlin, Germany</div>
+                    </div>
+                    <div class="info-container">
+                        <label for="countdown">Days till departure:</label>
+                        <div class="countdown">18</div>
+                    </div>
                 </div>
-                <div class="info-container">
-                    <label for="temp">Temperature:</label>
-                    <div id="temp"></div>
-                </div>
-                <div class="info-container">
-                    <label for="wind-dirc">Wind direction:</label>
-                    <div id="wind-dir"></div>
-                </div>
+                <section class="dest-weather">
+                    <div class="info-container">
+                        <label for="desc">Weather desciption:</label>
+                        <div id="desc">Broken Clouds</div>
+                    </div>
+                    <div class="info-container">
+                        <label for="temp">Temperature:</label>
+                        <div id="temp">18</div>
+                    </div>
+                    <div class="info-container">
+                        <label for="wind-dirc">Wind direction:</label>
+                        <div id="wind-dir">NE</div>
+                    </div>
+                </section>
             </section>
-        </section>
+        </main>
+        <footer>This is a footer</footer>
     </body>
 </html>

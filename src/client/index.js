@@ -8,9 +8,9 @@ import { tripDeets } from './js/app'
 import { displayTrip } from './js/app'
 
 //import css
-import './styles/base.scss'
+import './styles/form.scss'
 import './styles/global.scss'
-import './styles/weather-display.scss'
+import './styles/trip-info.scss'
 
 //export functions to use in app
 export {
