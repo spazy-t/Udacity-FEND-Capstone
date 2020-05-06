@@ -8,15 +8,17 @@
     <body>
         <header>This is a header</header>
         <main>
-            <form>
-                <label for="city">Destination:</label>
-                <input type="text" id="city" placeholder="Enter city">
-                <label for="trip-date">Date:</label>
-                <input type="date" id="trip-date" required pattern="\d{4}-\d{2}-\d{2}">
-                <input type="submit" value="Search Trip" id="submit-form">
-            </form>
+            <div class="form-container">
+                <form>
+                    <label for="city">Destination:</label>
+                    <input type="text" id="city" placeholder="Enter city">
+                    <label for="trip-date">Date:</label>
+                    <input type="date" id="trip-date" required pattern="\d{4}-\d{2}-\d{2}">
+                    <input type="submit" value="Search Trip" id="submit-form">
+                </form>
+            </div>
             <section class="trip-info">
-                <img class="dest-img" src="https://pixabay.com/get/54e0d44a495bb10ff3d8992cc62e3479173ddde74e5074417d2972d09144c1_640.jpg">
+                <img class="dest-img" src="">
                 <div id="time-place">
                     <div class="info-container">
                         <label for="dest">Destination:</label>
@@ -28,18 +30,9 @@
                     </div>
                 </div>
                 <section class="dest-weather">
-                    <div class="info-container">
-                        <label for="desc">Weather desciption:</label>
-                        <div id="desc">Broken Clouds</div>
-                    </div>
-                    <div class="info-container">
-                        <label for="temp">Temperature:</label>
-                        <div id="temp">18</div>
-                    </div>
-                    <div class="info-container">
-                        <label for="wind-dirc">Wind direction:</label>
-                        <div id="wind-dir">NE</div>
-                    </div>
+                    <div id="desc">Broken Clouds</div>
+                    <div id="temp">18</div>
+                    <div id="wind-dir">NE</div>
                 </section>
             </section>
         </main>

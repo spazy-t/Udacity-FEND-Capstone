@@ -4,34 +4,123 @@ section {
         display: flex;
         flex-direction: column;
         margin: 10px 0 25px;
-        padding-top: 15px;
-        background: rgba($color: #000, $alpha: 0.6);
-        color: white;
+        padding: 15px 0;
+        background: rgba($color: #a805f3, $alpha: 0.5);
+        border: 1px solid #000;
+        color: #000;
 
         .dest-weather {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-template-areas: 
+            "desc temp"
+            "icon wind";
+            grid-gap: 1em;
+            border: 2px solid #999;
+            border-radius: 0.5em;
+            margin: 0 15px;
+            padding: 15px;
+
+            #desc {
+                grid-area: desc;
+            }
+
+            #temp {
+                grid-area: temp;
+                text-align: right;
+            }
+
+            #wind-dir {
+                grid-area: wind;
+                text-align: right;
+                align-self: flex-end;
+            }
+
+            @media (min-width: 1200px) {
+                grid-area: dw;
+                width: 100%;
+                max-width: 250px;
+                justify-self: center;
+                margin: 0;
+                box-sizing: border-box;
+                font-size: 1.2em;
+            }
         }
 
         .dest-img {
             align-self: center;
-            width: 90%;
+            max-width: 90%;
             border-radius: 0.3em;
+
+            @media (min-width: 1200px) {
+                max-width: 500px;
+                grid-area: img;
+                margin-left: 100px;
+            }
         }
 
         #time-place {
             margin: 15px 0;
+
+            .info-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+
+                label {
+                    text-transform: uppercase;
+                    font-weight: bold;
+                }
+
+                div {
+                    font-weight: bold;
+                    font-size: 1em;
+                    margin-left: 10px;
+                }
+
+                &:last-child {
+                    border-bottom: 1px solid #000;
+                    margin: 0 10px;
+                    padding-bottom: 10px;
+                }
+
+                @media (min-width: 1200px) {
+                    font-size: 2.2em;
+                }
+            }
+
+            @media (min-width: 1200px) {
+                grid-area: tp;
+                display: grid;
+                max-width: 800px;
+                grid-template-columns: auto;
+                grid-template-rows: repeat(2, auto);
+
+                .info-container:first-child {
+                    margin-bottom: 5px;
+                    grid-row: 1;
+                    justify-content: space-between;
+                }
+
+                .info-container:last-child {
+                    margin: 5px 0 0;
+                    padding: 0;
+                    grid-row: 2;
+                    justify-content: space-between;
+                }
+            }
         }
-    }
 
-    .info-container {
-        display: flex;
-        flex-direction: row;
-        margin: 0 15px;
-
-        div:last-child {
-            margin-left: 10px;
+        @media (min-width: 1200px) {
+            display: grid;
+            grid-template-columns: repeat(2, auto);
+            grid-template-rows: repeat(2, 1fr);
+            grid-template-areas: 
+            "tp img"
+            "dw img";
+            justify-content: center;
         }
     }
 }
