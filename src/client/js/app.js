@@ -1,12 +1,13 @@
+//TODO: place globas in a globals.js where each has a function with nested let variables and getter / setters
 //initial false boolean to be set true when input falls back to text input
 let textDateInput = false
-
+let tripsArr = []
 //global object to hold trip details
 let tripDeets = {  
     city: '',
     country: '',
     lat: '',
-    lang: '',
+    lng: '',
     departure: '',
     image: '',
     weather: {}
@@ -14,6 +15,7 @@ let tripDeets = {
 
 function init() {
     document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
+    document.querySelector('.trip-list').addEventListener('click', showSavedTrip)
 
     if(document.querySelector('#trip-date').type === 'text') {
         //sets placeholder text to prompt correct date format
@@ -24,7 +26,7 @@ function init() {
 }
 
 //called from apiHandler to display stored data after all api calls
-function displayTrip() {
+function displayTrip(displayObj, saveable) {
     //grab dom elements
     const dest = document.querySelector('.dest')
     const countDown = document.querySelector('.countdown')
@@ -33,22 +35,26 @@ function displayTrip() {
     const windDir = document.querySelector('#wind-dir')
 
     //determines countdown days
-    const countDownNum = daysToGo(tripDeets.departure)
+    const countDownNum = daysToGo(displayObj.departure)
 
     //poulates dom elements
-    dest.innerHTML = `${tripDeets.city}, ${tripDeets.country}`
+    dest.innerHTML = `${displayObj.city}, ${displayObj.country}`
     countDown.innerHTML = countDownNum
-    weatherDesc.innerHTML = tripDeets.weather.desc
-    tempDegs.innerHTML = tripDeets.weather.temp
-    windDir.innerHTML = tripDeets.weather.wind
+    weatherDesc.innerHTML = displayObj.weather.desc
+    tempDegs.innerHTML = displayObj.weather.temp
+    windDir.innerHTML = displayObj.weather.wind
 
     //display image from stored url
-    console.log('app.js > displayImage: '+tripDeets.image)
+    console.log('app.js > displayImage: '+displayObj.image)
     const imgTag = document.querySelector('.dest-img')
-    imgTag.setAttribute('src', tripDeets.image)
+    imgTag.setAttribute('src', displayObj.image)
+
+    //as the trip search has worked and displays, allow it to be saved
+    if(saveable){
+        document.querySelector('#save-trip').addEventListener('click', saveTrip)
+    }
 }
 
-//TODO: use again later when recalling saved trips to recalculate countdown
 //find out how many days to go between today and date given
 //found formula @ https://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates
 function daysToGo(date) {
@@ -66,6 +72,68 @@ function daysToGo(date) {
     const daysToGo = Math.round((tripDay - today) / oneDay)
 
     return daysToGo
+}
+
+//save current trip to server array via post method
+function saveTrip(evt) {
+    console.log('save Trip')
+    if (tripDeets.city != '') {
+        storeTrip('http://localhost:3000/save-data')
+        .then((allTrips) => {
+            sortTrips(allTrips)
+            evt.target.removeEventListener('click', saveTrip)
+        })
+        .catch(err => {
+            alert('error trying to save trip, please try again')
+        })
+    }
+}
+
+//sort returned array of trips into order via departure date
+function sortTrips(arrOfTrips) {
+    arrOfTrips.sort((a, b) => new Date(a.departure) - new Date(b.departure))
+    //store sorted array in global to access later on item click
+    tripsArr = arrOfTrips
+    console.log(arrOfTrips)
+
+    //display arrOfTrips
+    const tripList = document.querySelector('.trip-list')
+    const tripFrag = document.createDocumentFragment()
+
+    for (const [i, trip] of arrOfTrips.entries()) {
+        let tripObj = document.createElement('p')
+        tripObj.setAttribute('id', i)
+        tripObj.innerHTML = `${trip.city} ${daysToGo(trip.departure)}`
+        tripFrag.appendChild(tripObj)
+    }
+    //clear list div and re-populate
+    tripList.innerHTML = ''
+    tripList.appendChild(tripFrag)
+}
+
+function showSavedTrip(evt) {
+    const listTarget = evt.target
+    if(listTarget.nodeName.toLowerCase() === 'p') {
+        displayTrip(tripsArr[listTarget.id], false)
+    }
+}
+
+const storeTrip = async (url = '') => {
+    const res = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tripDeets)
+    })
+
+    try {
+        const data = await res.json()
+        return data
+    } catch (e){
+        console.log('error', e)
+    }
 }
 
 //if formHandler - textfallback is called set a boolean to true so you can run an if statement

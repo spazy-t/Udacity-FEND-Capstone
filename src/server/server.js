@@ -1,3 +1,5 @@
+let tripsArr = []
+
 const GeocoderGeonames = require('geocoder-geonames')
 const weatherbit = require('@datafire/weatherbit').create()
 const PixabayApi = require('node-pixabayclient')
@@ -112,6 +114,7 @@ app.post('/pixaApi', (req, response) => {
                 console.log('error', err)
                 return
             }
+            //TODO: see if you can make sure it's not infinite loop
             //if not images then change params and try again
             if (res.totalHits === 0) {
                 params.q = `${country}`
@@ -123,6 +126,14 @@ app.post('/pixaApi', (req, response) => {
     }
 
     queryPixa()
+})
+
+//post route to save trip data
+app.post('/save-data', (req, res) => {
+    const currentTrip = req.body
+
+    tripsArr.push(currentTrip)
+    res.send(tripsArr)
 })
 
 module.exports = { app }

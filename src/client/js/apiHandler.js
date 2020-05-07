@@ -1,4 +1,4 @@
-//TODO:later you'll want to store just the original date and parsed destination
+//chain promises to use each api and parse the data
 function handleApi(place) {
     const tripGlobal = Client.tripDeets
 
@@ -21,7 +21,7 @@ function handleApi(place) {
                 parseImageData(imageData)
             })
             .then(() => {
-                Client.displayTrip()
+                Client.displayTrip(Client.tripDeets, true)
             })
         })
     })
@@ -57,7 +57,8 @@ function parseWeather(wData) {
 function parseGeoData(tripData) {
 
     //TODO: run through options and find the one 
-    //that matches country from user?
+    //that matches country from user instead of just grabbing the first item?
+    //or does the api find the correct one first if country is entered?
 
     const tripGlobal = Client.tripDeets
     
