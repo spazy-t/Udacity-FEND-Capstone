@@ -89,9 +89,25 @@ function saveTrip(evt) {
     }
 }
 
-//sort returned array of trips into order via departure date
+//sort returned array of saved trips into order via departure date and display
 function sortTrips(arrOfTrips) {
     arrOfTrips.sort((a, b) => new Date(a.departure) - new Date(b.departure))
+
+    let negArr = []
+    arrOfTrips.forEach(trip => {
+        if(daysToGo(trip.departure) < 0) {
+            negArr.push(trip)
+        }
+    })
+    //if any negative days to go found reverse order and add bak onto sorted array
+    //so we can display expired trips at back of list
+    if (negArr.length >= 1) {
+        negArr.reverse()
+        negArr.forEach(neg => {
+            arrOfTrips.push(neg)
+            arrOfTrips.shift()
+        })
+    }
     //store sorted array in global to access later on item click
     tripsArr = arrOfTrips
     console.log(arrOfTrips)
@@ -101,9 +117,13 @@ function sortTrips(arrOfTrips) {
     const tripFrag = document.createDocumentFragment()
 
     for (const [i, trip] of arrOfTrips.entries()) {
-        let tripObj = document.createElement('p')
+        const tripObj = document.createElement('p')
+        const tripDepart = daysToGo(trip.departure)
+        if (tripDepart < 0) {
+            tripObj.setAttribute('class', 'expired')
+        }
         tripObj.setAttribute('id', i)
-        tripObj.innerHTML = `${trip.city} ${daysToGo(trip.departure)}`
+        tripObj.innerHTML = `${trip.city} <span>${tripDepart}</span>`
         tripFrag.appendChild(tripObj)
     }
     //clear list div and re-populate
@@ -111,6 +131,7 @@ function sortTrips(arrOfTrips) {
     tripList.appendChild(tripFrag)
 }
 
+//check on event that it's the target that we want
 function showSavedTrip(evt) {
     const listTarget = evt.target
     if(listTarget.nodeName.toLowerCase() === 'p') {

@@ -11,6 +11,7 @@ import { displayTrip } from './js/app'
 import './styles/form.scss'
 import './styles/global.scss'
 import './styles/trip-info.scss'
+import './styles/base.scss'
 
 //export functions to use in app
 export {

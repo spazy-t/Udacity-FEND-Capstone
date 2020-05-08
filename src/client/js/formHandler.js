@@ -11,10 +11,10 @@ function handleSubmit(evt) {
     } else if(!checkDate(tripDate)) {
         alert('please enter valid date')
         return
-    } else if(Client.daysToGo(tripDate) < -1) {
+    } /*else if(Client.daysToGo(tripDate) < -1) {
         alert('Please enter an upcoming trip date')
         return
-    }
+    }*/
 
     Client.tripDeets.departure = tripDate
     Client.handleApi(tripDest)
