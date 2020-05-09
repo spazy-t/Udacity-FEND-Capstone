@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const ImageminPlugin = require('imagemin-webpack')
 
 module.exports = {
     entry: './src/client/index.js',
@@ -16,6 +17,11 @@ module.exports = {
                 test: '/\.js$/',
                 exclude: /node_modules/,
                 loader: "babel-loader"
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
+                loader: "file-loader",
+                options: '[name].[ext]'
             }
         ]
     },
@@ -29,6 +35,15 @@ module.exports = {
             verbose: true,
             cleanStaleWebpackAssets: true,
             protectWebpackAssets: false
+        }),
+        new ImageminPlugin({
+            bail: false,
+            cache: true,
+            imageminOptions: {
+                plugins: [
+                    ['pngquant', {quality: [0.5, 0.6]}]
+                ]
+            }
         })
     ]
 }

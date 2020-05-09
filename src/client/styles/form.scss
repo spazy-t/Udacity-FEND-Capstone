@@ -1,3 +1,5 @@
+@import './base.scss';
+
 .form-container {
     display: flex;
     flex-direction: column;
@@ -5,6 +7,12 @@
     background: #777;
     width: 100%;
     border-bottom: 2px solid #000;
+
+    @media (min-width: 1200px) {
+        flex-direction: row;
+        justify-content: center;
+        padding: 20px 0;
+    }
 }
 
 form {
@@ -15,7 +23,8 @@ form {
     grid-template-areas: 
     "lb1 inptOne"
     "lb2 inptTwo"
-    "sub sub";
+    "sub sub"
+    "btns btns";
     width: 100%;
 
     #submit-form {
@@ -31,11 +40,28 @@ form {
         grid-area: inptOne;
     }
 
+    #btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: inherit;
+        margin-bottom: 10px;
+        grid-area: btns;
+
+        @media (min-width: 1200px) {
+            flex-direction: column;
+            width: auto;
+            margin: 0 0 0 10px;
+            justify-content: space-between;
+        }
+    }
+
     input {
         margin: 0 10px 25px 0;
         background: none;
         font-family: inherit;
         font-weight: 700;
+        text-align: center;
         border-bottom: 1px solid black;
 
         &:focus {
@@ -44,30 +70,34 @@ form {
         }
 
         &[type=submit] {
+            @extend button;
             margin: 0 10px 15px 10px;
-            border: 4px solid black;
-            border-radius: 1em;
-            font-weight: 900;
-            text-transform: uppercase;
 
-            &:hover {
-                border-style: double;
+            @media (min-width: 1200px) {
+                margin: 0;
             }
+        }
 
-            &:active {
-                border-style: solid;
-                color: white;
-                background: black;
-            }
+        @media (min-width: 1200px) {
+            font-size: 1em;
         }
     }
 
     label {
         text-align: left;
         margin: 0 10px;
+        font-family: inherit;
+        font-weight: 900;
+        font-size: 1em;
     }
 
     @media (min-width: 1200px) {
         max-width: 600px;
+        padding: 0;
+        grid-template-columns: 1fr 2fr auto;
+        grid-template-areas: 
+        "lb1 inptOne btns"
+        "lb2 inptTwo btns"
+        "sub sub btns";
     }
 }

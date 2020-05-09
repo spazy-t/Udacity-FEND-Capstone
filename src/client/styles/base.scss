@@ -1,7 +1,41 @@
+@import './global.scss';
+
 .expired {
     color: grey;
 
     span {
         color: red;
+    }
+}
+
+button {
+    background: none;
+    border: 4px solid black;
+    border-radius: 1em;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    font-family: inherit;
+
+    &:hover {
+        border-style: double;
+    }
+
+    &:active {
+        border-style: solid;
+        color: white;
+        background: black;
+    }
+}
+
+.trip-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    p {
+        @extend button;
+        padding: 5px;
     }
 }
