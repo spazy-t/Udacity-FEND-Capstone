@@ -33,6 +33,7 @@ function displayTrip(displayObj, saveable) {
     const weatherDesc = document.querySelector('#desc')
     const tempDegs = document.querySelector('#temp')
     const windDir = document.querySelector('#wind-dir')
+    const wIcon = document.querySelector('#icon')
 
     //determines countdown days
     const countDownNum = daysToGo(displayObj.departure)
@@ -43,6 +44,7 @@ function displayTrip(displayObj, saveable) {
     weatherDesc.innerHTML = displayObj.weather.desc
     tempDegs.innerHTML = displayObj.weather.temp
     windDir.innerHTML = displayObj.weather.wind
+    wIcon.setAttribute('src', `${displayObj.weather.icon}.png`)
 
     //display image from stored url
     console.log('app.js > displayImage: '+displayObj.image)
@@ -76,6 +78,7 @@ function daysToGo(date) {
 
 //save current trip to server array via post method
 function saveTrip(evt) {
+    evt.preventDefault()
     console.log('save Trip')
     if (tripDeets.city != '') {
         storeTrip('http://localhost:3000/save-data')
@@ -139,6 +142,7 @@ function showSavedTrip(evt) {
     }
 }
 
+//post route to save trip into server array
 const storeTrip = async (url = '') => {
     const res = await fetch(url, {
         method: 'POST',

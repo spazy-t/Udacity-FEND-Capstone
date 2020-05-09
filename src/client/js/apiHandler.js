@@ -48,6 +48,7 @@ function parseWeather(wData) {
     tripWeather.desc = weatherDay.weather.description
     tripWeather.temp = weatherDay.temp
     tripWeather.wind = weatherDay.wind_cdir
+    tripWeather.icon = weatherDay.weather.icon
 
     //pass into global trip details obj
     Client.tripDeets.weather = tripWeather

@@ -3,15 +3,30 @@
 .form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     background: #777;
     width: 100%;
     border-bottom: 2px solid #000;
 
     @media (min-width: 1200px) {
-        flex-direction: row;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr repeat(2, auto) 1fr;
         padding: 20px 0;
+    }
+
+    #btn-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: inherit;
+        margin-bottom: 10px;
+
+        @media (min-width: 1200px) {
+            flex-direction: column;
+            width: auto;
+            margin: 0 0 0 10px;
+            grid-column: 3;
+            justify-content: space-between;
+        }
     }
 }
 
@@ -23,8 +38,7 @@ form {
     grid-template-areas: 
     "lb1 inptOne"
     "lb2 inptTwo"
-    "sub sub"
-    "btns btns";
+    "sub sub";
     width: 100%;
 
     #submit-form {
@@ -38,22 +52,6 @@ form {
 
     #city {
         grid-area: inptOne;
-    }
-
-    #btn-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        width: inherit;
-        margin-bottom: 10px;
-        grid-area: btns;
-
-        @media (min-width: 1200px) {
-            flex-direction: column;
-            width: auto;
-            margin: 0 0 0 10px;
-            justify-content: space-between;
-        }
     }
 
     input {
@@ -94,10 +92,6 @@ form {
     @media (min-width: 1200px) {
         max-width: 600px;
         padding: 0;
-        grid-template-columns: 1fr 2fr auto;
-        grid-template-areas: 
-        "lb1 inptOne btns"
-        "lb2 inptTwo btns"
-        "sub sub btns";
+        grid-column: 2;
     }
 }

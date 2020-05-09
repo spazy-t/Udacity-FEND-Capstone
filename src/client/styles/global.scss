@@ -28,6 +28,31 @@ input {
     border: none;
 }
 
+button {
+    background: none;
+    border: 4px solid black;
+    border-radius: 1em;
+    text-transform: uppercase;
+    font-weight: 900;
+    cursor: pointer;
+    font-family: inherit;
+
+    &:hover {
+        border-style: double;
+    }
+
+    &:active {
+        border-style: solid;
+        color: white;
+        background: black;
+    }
+
+    &:focus {
+        outline-color: #000;
+        outline-style: dotted;
+    }
+}
+
 .box {
     border: 1px solid red;
 }

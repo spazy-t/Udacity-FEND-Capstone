@@ -21,7 +21,9 @@ module.exports = {
             {
                 test: /\.(png|jpg|gif)$/,
                 loader: "file-loader",
-                options: '[name].[ext]'
+                options: {
+                    name: '[name].[ext]'
+                }
             }
         ]
     },
@@ -38,7 +40,7 @@ module.exports = {
         }),
         new ImageminPlugin({
             bail: false,
-            cache: true,
+            cache: false,
             imageminOptions: {
                 plugins: [
                     ['pngquant', {quality: [0.5, 0.6]}]

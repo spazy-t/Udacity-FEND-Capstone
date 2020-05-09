@@ -15,15 +15,15 @@
                     <label for="trip-date">Date:</label>
                     <input type="date" id="trip-date" required pattern="\d{4}-\d{2}-\d{2}">
                     <input type="submit" value="Search Trip" id="submit-form">
-                    <div id="btn-container">
-                        <button id="save-trip">Save Trip</button>
-                        <button id="remove-trip">Remove Trip</button>
-                    </div>
                 </form>
+                <div id="btn-container">
+                    <button id="save-trip">Save Trip</button>
+                    <button id="remove-trip">Remove Trip</button>
+                </div>
             </div>
             <div class="trip-list"></div>
             <section class="trip-info">
-                <img class="dest-img" src="">
+                <img class="dest-img" alt="destination image">
                 <div id="time-place">
                     <div class="info-container">
                         <label for="dest">Destination:</label>
@@ -38,6 +38,7 @@
                     <div id="desc">Broken Clouds</div>
                     <div id="temp">18</div>
                     <div id="wind-dir">NE</div>
+                    <img id="icon" alt="weather icon">
                 </section>
             </section>
         </main>
