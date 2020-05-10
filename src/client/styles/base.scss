@@ -17,5 +17,32 @@
     p {
         @extend button;
         padding: 5px;
+        background: rgba($color: #fff, $alpha: 0.95);
+        font-size: 0.7em;
     }
+}
+
+header {
+    background: rgba($color: #fff, $alpha: 0.8);
+    font-family: inherit;
+    font-weight: 900;
+    padding: 15px 0 15px 15px;
+
+    h1 {
+        margin: 0;
+        font-size: 1.4em;
+    }
+
+    @media (min-width: 1200px) {
+        padding: 15px 0 15px 25px;
+
+        h1 {
+            font-size: 2em;
+        }
+    }
+}
+
+footer {
+    padding: 15px;
+    background: rgba($color: #777, $alpha: 0.9);
 }

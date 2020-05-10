@@ -12,15 +12,13 @@ section {
         .dest-weather {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
             grid-template-areas: 
             "desc temp"
-            "icon wind";
+            "img wind";
             grid-gap: 1em;
-            border: 2px solid #999;
-            border-radius: 0.5em;
             margin: 0 15px;
-            padding: 15px;
+            align-self: center;
 
             #desc {
                 grid-area: desc;
@@ -34,17 +32,19 @@ section {
             #wind-dir {
                 grid-area: wind;
                 text-align: right;
-                align-self: flex-end;
+                align-self: center;
+            }
+
+            #icon {
+                align-self: flex-start;
+                grid-area: img;
             }
 
             @media (min-width: 1200px) {
                 grid-area: dw;
                 width: 100%;
-                max-width: 250px;
-                justify-self: center;
                 margin: 0;
-                box-sizing: border-box;
-                font-size: 1.2em;
+                font-size: 1.8em;
             }
         }
 
@@ -62,6 +62,29 @@ section {
 
         #time-place {
             margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+
+            label {
+                text-transform: uppercase;
+
+                &[for=dest] {
+                    font-size: 1.3em;
+                    text-decoration: underline;
+                }
+            }
+
+            div {
+                font-size: 1em;
+
+                &:last-child {
+                    margin-left: 10px;
+                }
+            }
+
+            .dest {
+                margin-bottom: 15px;
+            }
 
             .info-container {
                 display: flex;
@@ -69,25 +92,10 @@ section {
                 justify-content: center;
                 align-items: center;
 
-                label {
-                    text-transform: uppercase;
-                    font-weight: bold;
-                }
-
-                div {
-                    font-weight: bold;
-                    font-size: 1em;
-                    margin-left: 10px;
-                }
-
                 &:last-child {
                     border-bottom: 1px solid #000;
                     margin: 0 10px;
                     padding-bottom: 10px;
-                }
-
-                @media (min-width: 1200px) {
-                    font-size: 2.2em;
                 }
             }
 
@@ -97,19 +105,7 @@ section {
                 max-width: 800px;
                 grid-template-columns: auto;
                 grid-template-rows: repeat(2, auto);
-
-                .info-container:first-child {
-                    margin-bottom: 5px;
-                    grid-row: 1;
-                    justify-content: space-between;
-                }
-
-                .info-container:last-child {
-                    margin: 5px 0 0;
-                    padding: 0;
-                    grid-row: 2;
-                    justify-content: space-between;
-                }
+                font-size: 2.2em;
             }
         }
 

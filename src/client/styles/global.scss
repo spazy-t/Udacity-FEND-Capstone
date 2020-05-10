@@ -6,17 +6,25 @@ html {
     border: 0;
 
     body {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
         margin: 0;
         padding: 0;
         border: 0;
         background: #fff;
         background-image: url('./../media/world.png');
-        background-size: cover;
+        background-position: center;
+        background-size: 50em;
+        font-family: 'Noto Sans JP', sans-serif;
+
+        @media (min-width: 1200px) {
+            background-size: cover;
+        }
     }
 }
 
 main {
-    font-family: 'Noto Sans JP', sans-serif;
 
     h1, h2, h3 {
         margin: 0;
@@ -31,7 +39,7 @@ input {
 button {
     background: none;
     border: 4px solid black;
-    border-radius: 1em;
+    border-radius: 0.5em;
     text-transform: uppercase;
     font-weight: 900;
     cursor: pointer;

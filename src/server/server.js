@@ -136,4 +136,8 @@ app.post('/save-data', (req, res) => {
     res.send(tripsArr)
 })
 
+app.get('/trips', (req, res) => {
+    res.send(tripsArr)
+})
+
 module.exports = { app }

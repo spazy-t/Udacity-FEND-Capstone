@@ -23,6 +23,17 @@ function init() {
         //set boolean in app.js to true so passed date can be converted
         textTruthy()
     }
+
+    //grab any saved trips, if any, and display on strt up of app
+    getSavedTrips('http://localhost:3000/trips')
+    .then((storedTrips) => {
+        if (storedTrips.length > 0) {
+            sortTrips(storedTrips)
+        }
+    })
+    .catch(err => {
+        console.log('error', err)
+    })
 }
 
 //called from apiHandler to display stored data after all api calls
@@ -42,8 +53,8 @@ function displayTrip(displayObj, saveable) {
     dest.innerHTML = `${displayObj.city}, ${displayObj.country}`
     countDown.innerHTML = countDownNum
     weatherDesc.innerHTML = displayObj.weather.desc
-    tempDegs.innerHTML = displayObj.weather.temp
-    windDir.innerHTML = displayObj.weather.wind
+    tempDegs.innerHTML = `${displayObj.weather.temp}&deg;C`
+    windDir.innerHTML = `wind: ${displayObj.weather.wind}`
     wIcon.setAttribute('src', `${displayObj.weather.icon}.png`)
 
     //display image from stored url
@@ -139,6 +150,8 @@ function showSavedTrip(evt) {
     const listTarget = evt.target
     if(listTarget.nodeName.toLowerCase() === 'p') {
         displayTrip(tripsArr[listTarget.id], false)
+    } else if(listTarget.nodeName.toLowerCase() === 'span') {
+        displayTrip(tripsArr[listTarget.parentNode.id], false)
     }
 }
 
@@ -158,6 +171,18 @@ const storeTrip = async (url = '') => {
         return data
     } catch (e){
         console.log('error', e)
+    }
+}
+
+//get request to retrieve saved trips
+const getSavedTrips = async (url = '') => {
+    const res = await fetch(url)
+
+    try {
+        const data = await res.json()
+        return data
+    } catch (e){
+        console.log('error > getSavedTrips', e)
     }
 }
 
