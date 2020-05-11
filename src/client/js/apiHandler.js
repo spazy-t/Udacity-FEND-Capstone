@@ -21,7 +21,7 @@ function handleApi(place) {
                 parseImageData(imageData)
             })
             .then(() => {
-                Client.displayTrip(Client.tripDeets, true)
+                Client.displayTrip(true)
             })
         })
     })

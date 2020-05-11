@@ -24,6 +24,9 @@ function init() {
         textTruthy()
     }
 
+    //hide default labels etc on startup
+    clearTripUi()
+
     //grab any saved trips, if any, and display on strt up of app
     getSavedTrips('http://localhost:3000/trips')
     .then((storedTrips) => {
@@ -36,8 +39,13 @@ function init() {
     })
 }
 
-//called from apiHandler to display stored data after all api calls
-function displayTrip(displayObj, saveable) {
+//called from various point to display current or selected trip
+function displayTrip(saveable) {
+    //make sure main elements are visible
+    document.querySelector('.dest-img').removeAttribute('style')
+    document.querySelector('#time-place').removeAttribute('style')
+    document.querySelector('.dest-weather').removeAttribute('style')
+
     //grab dom elements
     const dest = document.querySelector('.dest')
     const countDown = document.querySelector('.countdown')
@@ -47,25 +55,33 @@ function displayTrip(displayObj, saveable) {
     const wIcon = document.querySelector('#icon')
 
     //determines countdown days
-    const countDownNum = daysToGo(displayObj.departure)
+    const countDownNum = daysToGo(tripDeets.departure)
 
     //poulates dom elements
-    dest.innerHTML = `${displayObj.city}, ${displayObj.country}`
+    dest.innerHTML = `${tripDeets.city}, ${tripDeets.country}`
     countDown.innerHTML = countDownNum
-    weatherDesc.innerHTML = displayObj.weather.desc
-    tempDegs.innerHTML = `${displayObj.weather.temp}&deg;C`
-    windDir.innerHTML = `wind: ${displayObj.weather.wind}`
-    wIcon.setAttribute('src', `${displayObj.weather.icon}.png`)
+    weatherDesc.innerHTML = tripDeets.weather.desc
+    tempDegs.innerHTML = `${tripDeets.weather.temp}&deg;C`
+    windDir.innerHTML = `wind: ${tripDeets.weather.wind}`
+    wIcon.setAttribute('src', `${tripDeets.weather.icon}.png`)
 
     //display image from stored url
-    console.log('app.js > displayImage: '+displayObj.image)
+    console.log('app.js > displayImage: '+tripDeets.image)
     const imgTag = document.querySelector('.dest-img')
-    imgTag.setAttribute('src', displayObj.image)
+    imgTag.setAttribute('src', tripDeets.image)
 
     //as the trip search has worked and displays, allow it to be saved
     if(saveable){
+        document.querySelector('#remove-trip').removeEventListener('click', removeTrip)
         document.querySelector('#save-trip').addEventListener('click', saveTrip)
     }
+}
+
+//clear trip info helper
+function clearTripUi() {
+    document.querySelector('.dest-img').setAttribute('style', 'display: none')
+    document.querySelector('#time-place').setAttribute('style', 'display: none')
+    document.querySelector('.dest-weather').setAttribute('style', 'display: none')
 }
 
 //find out how many days to go between today and date given
@@ -92,10 +108,11 @@ function saveTrip(evt) {
     evt.preventDefault()
     console.log('save Trip')
     if (tripDeets.city != '') {
-        storeTrip('http://localhost:3000/save-data')
+        sendTrip('http://localhost:3000/save-data', tripDeets)
         .then((allTrips) => {
             sortTrips(allTrips)
             evt.target.removeEventListener('click', saveTrip)
+            document.querySelector('#remove-trip').addEventListener('click', removeTrip)
         })
         .catch(err => {
             alert('error trying to save trip, please try again')
@@ -148,22 +165,48 @@ function sortTrips(arrOfTrips) {
 //check on event that it's the target that we want
 function showSavedTrip(evt) {
     const listTarget = evt.target
+
     if(listTarget.nodeName.toLowerCase() === 'p') {
-        displayTrip(tripsArr[listTarget.id], false)
+        tripDeets = tripsArr[listTarget.id]
+        showSavedHelper()
     } else if(listTarget.nodeName.toLowerCase() === 'span') {
-        displayTrip(tripsArr[listTarget.parentNode.id], false)
+        tripDeets = tripsArr[listTarget.parentNode.id]
+        showSavedHelper()
     }
 }
 
+//helps showSavedTrip function by adding and removing relevant listeners before displaying
+function showSavedHelper() {
+    //remove unneeded listeners
+    document.querySelector('#save-trip').removeEventListener('click', saveTrip)
+    document.querySelector('#remove-trip').addEventListener('click', removeTrip)
+    //show saved trip
+    displayTrip(false)
+}
+
+function removeTrip(evt) {
+    evt.target.removeEventListener('click', removeTrip)
+    console.log('remove trip:')
+    console.log(tripDeets)
+
+    //call async to delete from server
+    sendTrip('http://localhost:3000/delete-trip', tripDeets)
+    .then((amendedTrips) => {
+        sortTrips(amendedTrips)
+        clearTripUi()
+        tripDeets = {}
+    })
+}
+
 //post route to save trip into server array
-const storeTrip = async (url = '') => {
+const sendTrip = async (url = '', data = {}) => {
     const res = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(tripDeets)
+        body: JSON.stringify(data)
     })
 
     try {

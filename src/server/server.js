@@ -136,6 +136,19 @@ app.post('/save-data', (req, res) => {
     res.send(tripsArr)
 })
 
+//post route to delete trip
+app.post('/delete-trip', (req, res) => {
+    const toDelete = req.body
+
+    for (let i = 0; i < tripsArr.length; i++) {
+        if(JSON.stringify(tripsArr[i]) === JSON.stringify(toDelete)) {
+            console.log('delete time')
+            tripsArr.splice(i, 1)
+        }
+    }
+    res.send(tripsArr)
+})
+
 app.get('/trips', (req, res) => {
     res.send(tripsArr)
 })
