@@ -20,6 +20,12 @@
         width: inherit;
         margin-bottom: 10px;
 
+        .inactive {
+            border-color: #444;
+            color: #444;
+            pointer-events: none;
+        }
+
         @media (min-width: 1200px) {
             flex-direction: column;
             width: auto;

@@ -6,6 +6,7 @@ import { daysToGo } from './js/app'
 import { init } from './js/app'
 import { tripDeets } from './js/app'
 import { displayTrip } from './js/app'
+import { deFocusList } from './js/app'
 
 //import css
 import './styles/form.scss'
@@ -27,7 +28,8 @@ export {
     daysToGo,
     textFallBack,
     tripDeets,
-    displayTrip
+    displayTrip,
+    deFocusList
 }
 
 //event listeners

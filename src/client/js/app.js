@@ -16,6 +16,8 @@ let tripDeets = {
 function init() {
     document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
     document.querySelector('.trip-list').addEventListener('click', showSavedTrip)
+    document.querySelector('#save-trip').classList.add('inactive')
+    document.querySelector('#remove-trip').classList.add('inactive')
 
     if(document.querySelector('#trip-date').type === 'text') {
         //sets placeholder text to prompt correct date format
@@ -43,8 +45,13 @@ function init() {
 function displayTrip(saveable) {
     //make sure main elements are visible
     document.querySelector('.dest-img').removeAttribute('style')
-    document.querySelector('#time-place').removeAttribute('style')
     document.querySelector('.dest-weather').removeAttribute('style')
+
+    const timePlace = document.querySelector('#time-place')
+    timePlace.querySelectorAll('label').forEach(label => {
+        label.removeAttribute('style')
+    })
+    timePlace.querySelector('.countdown').removeAttribute('style')
 
     //grab dom elements
     const dest = document.querySelector('.dest')
@@ -72,16 +79,28 @@ function displayTrip(saveable) {
 
     //as the trip search has worked and displays, allow it to be saved
     if(saveable){
-        document.querySelector('#remove-trip').removeEventListener('click', removeTrip)
-        document.querySelector('#save-trip').addEventListener('click', saveTrip)
+        const removeBtn = document.querySelector('#remove-trip')
+        const saveBtn = document.querySelector('#save-trip')
+
+        saveBtn.addEventListener('click', saveTrip)
+        removeBtn.removeEventListener('click', removeTrip)
+
+        saveBtn.classList.remove('inactive')
+        removeBtn.classList.add('inactive')
     }
 }
 
 //clear trip info helper
 function clearTripUi() {
     document.querySelector('.dest-img').setAttribute('style', 'display: none')
-    document.querySelector('#time-place').setAttribute('style', 'display: none')
     document.querySelector('.dest-weather').setAttribute('style', 'display: none')
+
+    const timePlace = document.querySelector('#time-place')
+    timePlace.querySelectorAll('label').forEach(label => {
+        label.setAttribute('style', 'display: none')
+    })
+    timePlace.querySelector('.countdown').setAttribute('style', 'display: none')
+    timePlace.querySelector('.dest').innerHTML = 'Start a new search or select saved trip'
 }
 
 //find out how many days to go between today and date given
@@ -112,7 +131,10 @@ function saveTrip(evt) {
         .then((allTrips) => {
             sortTrips(allTrips)
             evt.target.removeEventListener('click', saveTrip)
-            document.querySelector('#remove-trip').addEventListener('click', removeTrip)
+            evt.target.classList.add('inactive')
+            const removeBtn = document.querySelector('#remove-trip')
+            removeBtn.addEventListener('click', removeTrip)
+            removeBtn.classList.remove('inactive')
         })
         .catch(err => {
             alert('error trying to save trip, please try again')
@@ -166,25 +188,48 @@ function sortTrips(arrOfTrips) {
 function showSavedTrip(evt) {
     const listTarget = evt.target
 
+    console.log('show saved')
+    console.log(tripsArr.length)
+    console.log(tripsArr)
+
+    //have to stringify and parse the tripsArr to avoid deep referencing
+    //and hving the entyr overwritten when a new trip is searched
     if(listTarget.nodeName.toLowerCase() === 'p') {
-        tripDeets = tripsArr[listTarget.id]
-        showSavedHelper()
+        tripDeets = JSON.parse(JSON.stringify(tripsArr[listTarget.id]))
+        showSavedHelper(evt.target)
     } else if(listTarget.nodeName.toLowerCase() === 'span') {
-        tripDeets = tripsArr[listTarget.parentNode.id]
-        showSavedHelper()
+        tripDeets = JSON.parse(JSON.stringify(tripsArr[listTarget.parentNode.id]))
+        showSavedHelper(evt.target.parentNode)
     }
 }
 
 //helps showSavedTrip function by adding and removing relevant listeners before displaying
-function showSavedHelper() {
+function showSavedHelper(tripBtn) {
+    const saveBtn = document.querySelector('#save-trip')
+    const removeBtn = document.querySelector('#remove-trip')
     //remove unneeded listeners
-    document.querySelector('#save-trip').removeEventListener('click', saveTrip)
-    document.querySelector('#remove-trip').addEventListener('click', removeTrip)
+    saveBtn.removeEventListener('click', saveTrip)
+    removeBtn.addEventListener('click', removeTrip)
+    //deactivate save btn and activate remove btn
+    saveBtn.classList.add('inactive')
+    removeBtn.classList.remove('inactive')
+
+    //take off purple border from previously selected before adding to currently selected
+    deFocusList()
+    tripBtn.setAttribute('style', ('border-color: #a805f3'))
+
     //show saved trip
     displayTrip(false)
 }
 
+function deFocusList() {
+    document.querySelector('.trip-list').querySelectorAll('p').forEach(btn => {
+        btn.removeAttribute('style')
+    })
+}
+
 function removeTrip(evt) {
+    evt.target.classList.add('inactive')
     evt.target.removeEventListener('click', removeTrip)
     console.log('remove trip:')
     console.log(tripDeets)
@@ -239,3 +284,4 @@ export { displayTrip }
 export { tripDeets }
 export { init }
 export { daysToGo }
+export { deFocusList }

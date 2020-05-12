@@ -1,6 +1,6 @@
 //chain promises to use each api and parse the data
 function handleApi(place) {
-    const tripGlobal = Client.tripDeets
+    let tripGlobal = Client.tripDeets
 
     getGeo(place)
     .then((data) => {
@@ -21,6 +21,7 @@ function handleApi(place) {
                 parseImageData(imageData)
             })
             .then(() => {
+                Client.deFocusList()
                 Client.displayTrip(true)
             })
         })

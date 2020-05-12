@@ -1,4 +1,4 @@
-let tripsArr = []
+const tripsStored = []
 
 const GeocoderGeonames = require('geocoder-geonames')
 const weatherbit = require('@datafire/weatherbit').create()
@@ -132,25 +132,25 @@ app.post('/pixaApi', (req, response) => {
 app.post('/save-data', (req, res) => {
     const currentTrip = req.body
 
-    tripsArr.push(currentTrip)
-    res.send(tripsArr)
+    tripsStored.push(currentTrip)
+    res.send(tripsStored)
 })
 
 //post route to delete trip
 app.post('/delete-trip', (req, res) => {
     const toDelete = req.body
 
-    for (let i = 0; i < tripsArr.length; i++) {
-        if(JSON.stringify(tripsArr[i]) === JSON.stringify(toDelete)) {
+    for (let i = 0; i < tripsStored.length; i++) {
+        if(JSON.stringify(tripsStored[i]) === JSON.stringify(toDelete)) {
             console.log('delete time')
-            tripsArr.splice(i, 1)
+            tripsStored.splice(i, 1)
         }
     }
-    res.send(tripsArr)
+    res.send(tripsStored)
 })
 
 app.get('/trips', (req, res) => {
-    res.send(tripsArr)
+    res.send(tripsStored)
 })
 
 module.exports = { app }
