@@ -9,6 +9,25 @@ section {
         color: #000;
         min-height: 150px;
 
+        #start-prompt {
+            align-self: center;
+            margin-top: 4em;
+
+            @media (min-width: 768px) {
+                margin: 0;
+                grid-row-start: 1;
+                grid-row-end: 3;
+                grid-column-start: 1;
+                grid-column-end: 3;
+                text-align: center;
+                font-size: 1.3em;
+            }
+
+            @media (min-width: 992px) {
+                font-size: 1.5em;
+            }
+        }
+
         .dest-weather {
             display: grid;
             grid-template-columns: repeat(2, 1fr);

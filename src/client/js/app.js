@@ -46,12 +46,8 @@ function displayTrip(saveable) {
     //make sure main elements are visible
     document.querySelector('.dest-img').removeAttribute('style')
     document.querySelector('.dest-weather').removeAttribute('style')
-
-    const timePlace = document.querySelector('#time-place')
-    timePlace.querySelectorAll('label').forEach(label => {
-        label.removeAttribute('style')
-    })
-    timePlace.querySelector('.countdown').removeAttribute('style')
+    document.querySelector('#time-place').removeAttribute('style')
+    document.querySelector('#start-prompt').setAttribute('style', 'display: none')
 
     //grab dom elements
     const dest = document.querySelector('.dest')
@@ -94,13 +90,8 @@ function displayTrip(saveable) {
 function clearTripUi() {
     document.querySelector('.dest-img').setAttribute('style', 'display: none')
     document.querySelector('.dest-weather').setAttribute('style', 'display: none')
-
-    const timePlace = document.querySelector('#time-place')
-    timePlace.querySelectorAll('label').forEach(label => {
-        label.setAttribute('style', 'display: none')
-    })
-    timePlace.querySelector('.countdown').setAttribute('style', 'display: none')
-    timePlace.querySelector('.dest').innerHTML = 'Start a new search or select saved trip'
+    document.querySelector('#time-place').setAttribute('style', 'display: none')
+    document.querySelector('#start-prompt').removeAttribute('style')
 }
 
 //find out how many days to go between today and date given
