@@ -13,6 +13,7 @@ import './styles/form.scss'
 import './styles/global.scss'
 import './styles/trip-info.scss'
 import './styles/base.scss'
+import './styles/footer.scss'
 
 //all icon images
 //https://github.com/gatsbyjs/gatsby/issues/3663 9/05/2020

@@ -40,8 +40,19 @@ section {
                 grid-area: img;
             }
 
-            @media (min-width: 1200px) {
+            @media (min-width: 768px) {
                 grid-area: dw;
+                justify-self: flex-start;
+                min-width: 300px;
+                font-size: 1.3em;
+            }
+
+            @media (min-width: 992px) {
+                margin-left: 50px;
+                font-size: 1.5em;
+            }
+
+            @media (min-width: 1200px) {
                 width: 100%;
                 margin: 0;
                 font-size: 1.8em;
@@ -53,9 +64,16 @@ section {
             max-width: 90%;
             border-radius: 0.3em;
 
-            @media (min-width: 1200px) {
-                max-width: 500px;
+            @media (min-width: 768px) {
+                max-width: 70%;
                 grid-area: img;
+                justify-self: center;
+                margin: 25px 0;
+            }
+
+            @media (min-width: 1200px) {
+                max-width: 640px;
+                margin: 0;
                 margin-left: 100px;
             }
         }
@@ -96,27 +114,65 @@ section {
                     border-bottom: 1px solid #000;
                     margin: 0 10px;
                     padding-bottom: 10px;
+
+                    @media (min-width: 768px) and (max-width: 1199px) {
+                        border: none;
+                    }
                 }
             }
 
-            @media (min-width: 1200px) {
+            @media (min-width: 768px) {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                justify-self: flex-end;
+                max-width: 350px;
                 grid-area: tp;
+                margin: 0;
+                padding-right: 15px;
+                font-size: 1.3em;
+                border-right: 1px solid #000;
+            }
+
+            @media (min-width: 992px) {
+                padding-right: 50px;
+                max-width: 450px;
+                font-size: 1.5em;
+            }
+
+            @media (min-width: 1200px) {
                 display: grid;
                 max-width: 800px;
                 grid-template-columns: auto;
                 grid-template-rows: repeat(2, auto);
                 font-size: 2.2em;
+                border: none;
+                margin: 15px 0;
+                padding: 0;
             }
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 768px) {
             display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
+            grid-template-areas: 
+            "img img"
+            "tp dw";
+        }
+
+        @media (min-width: 992px) {
+            padding: 15px 0 25px 0;
+        }
+
+        @media (min-width: 1200px) {
             grid-template-columns: repeat(2, auto);
             grid-template-rows: repeat(2, 1fr);
             grid-template-areas: 
             "tp img"
             "dw img";
             justify-content: center;
+            padding: 15px 0;
         }
     }
 }
