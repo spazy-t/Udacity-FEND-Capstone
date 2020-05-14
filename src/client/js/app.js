@@ -234,7 +234,7 @@ function showSavedTrip(evt) {
     console.log(tripsArr)
 
     //have to stringify and parse the tripsArr to avoid deep referencing
-    //and hving the entyr overwritten when a new trip is searched
+    //and having the entry overwritten when a new trip is searched
     if(listTarget.nodeName.toLowerCase() === 'p') {
         tripDeets = JSON.parse(JSON.stringify(tripsArr[listTarget.id]))
         showSavedHelper(evt.target)
