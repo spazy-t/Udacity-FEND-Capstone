@@ -95,6 +95,11 @@ function init() {
     //hide default labels etc on startup
     clearTripUi()
 
+    if(localStorage.getItem('currentTrip')) {
+        tripDeets = JSON.parse(localStorage.getItem('currentTrip'))
+        displayTrip(true)
+    }
+
     //grab any saved trips, if any, and display on strt up of app
     getSavedTrips('http://localhost:3000/trips')
     .then((storedTrips) => {
@@ -149,6 +154,8 @@ function displayTrip(saveable) {
 
         saveBtn.classList.remove('inactive')
         removeBtn.classList.add('inactive')
+
+        localStorage.setItem('currentTrip', JSON.stringify(tripDeets))
     }
 }
 
@@ -162,9 +169,12 @@ function saveTrip(evt) {
             sortTrips(allTrips)
             evt.target.removeEventListener('click', saveTrip)
             evt.target.classList.add('inactive')
+
             const removeBtn = document.querySelector('#remove-trip')
             removeBtn.addEventListener('click', removeTrip)
             removeBtn.classList.remove('inactive')
+
+            localStorage.removeItem('currentTrip')
         })
         .catch(err => {
             console.log('error', err)

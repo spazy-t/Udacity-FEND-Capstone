@@ -74,7 +74,7 @@ app.get('/current/:lat-:lng', (req, res) => {
         res.send(data)
     })
     .catch((error) => {
-        console.log('error', error)
+        console.log('weatherbit error', error)
     })
 })
 
@@ -94,7 +94,7 @@ app.get('/forecast/:lat-:lng', (req, res) => {
         res.send(data)
     })
     .catch((error) => {
-        console.log('error', error)
+        console.log('weatherbit error', error)
     })
 })
 

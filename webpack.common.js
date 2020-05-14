@@ -1,5 +1,3 @@
-const path = require('path')
-const webpack = require('webpack')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack')
@@ -14,7 +12,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: '/\.js$/',
+                test: '/.js$/',
                 exclude: /node_modules/,
                 loader: "babel-loader"
             },
@@ -22,7 +20,8 @@ module.exports = {
                 test: /\.(png|jpg|gif)$/,
                 loader: "file-loader",
                 options: {
-                    name: '[name].[ext]'
+                    name: '[name].[ext]',
+                    outputPath: 'media'
                 }
             }
         ]
