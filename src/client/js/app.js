@@ -2,7 +2,7 @@
 //initial false boolean to be set true when input falls back to text input
 let textDateInput = false
 let tripsArr = []
-//global object to hold trip details
+//global object to hold current trip details
 let tripDeets = {  
     city: '',
     country: '',
@@ -12,6 +12,72 @@ let tripDeets = {
     image: '',
     weather: {}
 }
+
+/**
+ * Helpers
+ */
+
+//clear trip info helper
+function clearTripUi() {
+    document.querySelector('.dest-img').setAttribute('style', 'display: none')
+    document.querySelector('.dest-weather').setAttribute('style', 'display: none')
+    document.querySelector('#time-place').setAttribute('style', 'display: none')
+    document.querySelector('#start-prompt').removeAttribute('style')
+}
+
+//find out how many days to go between today and date given
+//found formula @ https://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates
+function daysToGo(date) {
+    //if date input falls back to text then perform needed conversion of input
+    if (textDateInput) {
+        const replaceReg = /\//gi
+        date = date.replace(replaceReg, '-')
+        date = date.split('-').reverse().join('-')
+    }
+
+    const oneDay = 24 * 60 * 60 * 1000
+    const today = new Date()
+    const tripDay = new Date(date)
+
+    const daysToGo = Math.round((tripDay - today) / oneDay)
+
+    return daysToGo
+}
+
+//helps showSavedTrip function by adding and removing relevant listeners before displaying
+function showSavedHelper(tripBtn) {
+    const saveBtn = document.querySelector('#save-trip')
+    const removeBtn = document.querySelector('#remove-trip')
+    //remove unneeded listeners
+    saveBtn.removeEventListener('click', saveTrip)
+    removeBtn.addEventListener('click', removeTrip)
+    //deactivate save btn and activate remove btn
+    saveBtn.classList.add('inactive')
+    removeBtn.classList.remove('inactive')
+
+    //take off purple border from previously selected before adding to currently selected
+    deFocusList()
+    tripBtn.setAttribute('style', ('border-color: #a805f3'))
+
+    //show saved trip
+    displayTrip(false)
+}
+
+function deFocusList() {
+    document.querySelector('.trip-list').querySelectorAll('p').forEach(btn => {
+        btn.removeAttribute('style')
+    })
+}
+
+//if formHandler - textfallback is called set a boolean to true so you can run an if statement
+//in checkDate to convert string date from dd/mm/yyyy => yyyy-mm-dd?
+function textTruthy() {
+    textDateInput = true
+}
+
+ /**
+  * Main functions
+  */
 
 function init() {
     document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
@@ -84,33 +150,6 @@ function displayTrip(saveable) {
         saveBtn.classList.remove('inactive')
         removeBtn.classList.add('inactive')
     }
-}
-
-//clear trip info helper
-function clearTripUi() {
-    document.querySelector('.dest-img').setAttribute('style', 'display: none')
-    document.querySelector('.dest-weather').setAttribute('style', 'display: none')
-    document.querySelector('#time-place').setAttribute('style', 'display: none')
-    document.querySelector('#start-prompt').removeAttribute('style')
-}
-
-//find out how many days to go between today and date given
-//found formula @ https://stackoverflow.com/questions/2627473/how-to-calculate-the-number-of-days-between-two-dates
-function daysToGo(date) {
-    //if date input falls back to text then perform needed conversion of input
-    if (textDateInput) {
-        const replaceReg = /\//gi
-        date = date.replace(replaceReg, '-')
-        date = date.split('-').reverse().join('-')
-    }
-
-    const oneDay = 24 * 60 * 60 * 1000
-    const today = new Date()
-    const tripDay = new Date(date)
-
-    const daysToGo = Math.round((tripDay - today) / oneDay)
-
-    return daysToGo
 }
 
 //save current trip to server array via post method
@@ -195,31 +234,6 @@ function showSavedTrip(evt) {
     }
 }
 
-//helps showSavedTrip function by adding and removing relevant listeners before displaying
-function showSavedHelper(tripBtn) {
-    const saveBtn = document.querySelector('#save-trip')
-    const removeBtn = document.querySelector('#remove-trip')
-    //remove unneeded listeners
-    saveBtn.removeEventListener('click', saveTrip)
-    removeBtn.addEventListener('click', removeTrip)
-    //deactivate save btn and activate remove btn
-    saveBtn.classList.add('inactive')
-    removeBtn.classList.remove('inactive')
-
-    //take off purple border from previously selected before adding to currently selected
-    deFocusList()
-    tripBtn.setAttribute('style', ('border-color: #a805f3'))
-
-    //show saved trip
-    displayTrip(false)
-}
-
-function deFocusList() {
-    document.querySelector('.trip-list').querySelectorAll('p').forEach(btn => {
-        btn.removeAttribute('style')
-    })
-}
-
 function removeTrip(evt) {
     evt.target.classList.add('inactive')
     evt.target.removeEventListener('click', removeTrip)
@@ -238,6 +252,10 @@ function removeTrip(evt) {
         alert('error deleting trip please try again')
     })
 }
+
+/**
+ * async
+ */
 
 //post route to save trip into server array
 const sendTrip = async (url = '', data = {}) => {
@@ -268,12 +286,6 @@ const getSavedTrips = async (url = '') => {
     } catch (e){
         console.log('error > getSavedTrips', e)
     }
-}
-
-//if formHandler - textfallback is called set a boolean to true so you can run an if statement
-//in checkDate to convert string date from dd/mm/yyyy => yyyy-mm-dd?
-function textTruthy() {
-    textDateInput = true
 }
 
 export { displayTrip }

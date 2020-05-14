@@ -114,9 +114,9 @@ app.post('/pixaApi', (req, response) => {
                 console.log('error', err)
                 return
             }
-            //TODO: see if you can make sure it's not infinite loop
+            
             //if not images then change params and try again
-            if (res.totalHits === 0) {
+            if (res.totalHits === 0 && params.q !== `${country}`) {
                 params.q = `${country}`
                 queryPixa()
             } else {
