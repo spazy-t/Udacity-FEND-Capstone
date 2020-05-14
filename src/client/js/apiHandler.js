@@ -27,6 +27,7 @@ function handleApi(place) {
         })
     })
     .catch(err => {
+        console.log('error', err)
         alert('destination not found, please check and try again')
     })
 }

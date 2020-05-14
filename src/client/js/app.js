@@ -128,6 +128,7 @@ function saveTrip(evt) {
             removeBtn.classList.remove('inactive')
         })
         .catch(err => {
+            console.log('error', err)
             alert('error trying to save trip, please try again')
         })
     }
@@ -231,6 +232,10 @@ function removeTrip(evt) {
         sortTrips(amendedTrips)
         clearTripUi()
         tripDeets = {}
+    })
+    .catch(err => {
+        console.log('err', err)
+        alert('error deleting trip please try again')
     })
 }
 

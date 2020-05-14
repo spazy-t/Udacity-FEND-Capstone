@@ -7,7 +7,7 @@ const PixabayApi = require('node-pixabayclient')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const path = require('path')
+//const path = require('path')
 const express = require('express')
 
 //create express server
@@ -109,7 +109,7 @@ app.post('/pixaApi', (req, response) => {
     }
     //place api query in nested function so it can be called again if not images returned
     function queryPixa() {
-        PixabayPhotos.query(params, (err, res, req) => {
+        PixabayPhotos.query(params, (err, res) => {
             if(err) {
                 console.log('error', err)
                 return
