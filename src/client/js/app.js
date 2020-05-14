@@ -58,6 +58,7 @@ function showSavedHelper(tripBtn) {
     //take off purple border from previously selected before adding to currently selected
     deFocusList()
     tripBtn.setAttribute('style', ('border-color: #a805f3'))
+    //localStorage.setItem('btnFocus', tripBtn.id)
 
     //show saved trip
     displayTrip(false)
@@ -95,9 +96,11 @@ function init() {
     //hide default labels etc on startup
     clearTripUi()
 
+    //checks to see if a displayed trip has been saved in browser storage, if so = display
     if(localStorage.getItem('currentTrip')) {
         tripDeets = JSON.parse(localStorage.getItem('currentTrip'))
-        displayTrip(true)
+        const toSave = JSON.parse(localStorage.getItem('toSave'))
+        displayTrip(toSave)
     }
 
     //grab any saved trips, if any, and display on strt up of app
@@ -105,6 +108,12 @@ function init() {
     .then((storedTrips) => {
         if (storedTrips.length > 0) {
             sortTrips(storedTrips)
+        }
+    })
+    .then(() => {
+        if(localStorage.getItem('btnFocus')) {
+            const focusBtn = document.getElementById(localStorage.getItem('btnFocus'))
+            focusBtn.setAttribute('style', ('border-color: #a805f3'))
         }
     })
     .catch(err => {
@@ -128,8 +137,13 @@ function displayTrip(saveable) {
     const windDir = document.querySelector('#wind-dir')
     const wIcon = document.querySelector('#icon')
 
-    //determines countdown days
+    //determines countdown days, if below 0 make countdown red
     const countDownNum = daysToGo(tripDeets.departure)
+    if(countDownNum < 0) {
+        countDown.setAttribute('style', 'color: red')
+    } else {
+        countDown.removeAttribute('style')
+    }
 
     //poulates dom elements
     dest.innerHTML = `${tripDeets.city}, ${tripDeets.country}`
@@ -137,12 +151,15 @@ function displayTrip(saveable) {
     weatherDesc.innerHTML = tripDeets.weather.desc
     tempDegs.innerHTML = `${tripDeets.weather.temp}&deg;C`
     windDir.innerHTML = `wind: ${tripDeets.weather.wind}`
-    wIcon.setAttribute('src', `${tripDeets.weather.icon}.png`)
+    wIcon.setAttribute('src', `media/${tripDeets.weather.icon}.png`)
 
     //display image from stored url
     console.log('app.js > displayImage: '+tripDeets.image)
     const imgTag = document.querySelector('.dest-img')
     imgTag.setAttribute('src', tripDeets.image)
+
+    //saves displayed trip in local storage for user if they navigate away from page
+    localStorage.setItem('currentTrip', JSON.stringify(tripDeets))
 
     //as the trip search has worked and displays, allow it to be saved
     if(saveable){
@@ -155,7 +172,14 @@ function displayTrip(saveable) {
         saveBtn.classList.remove('inactive')
         removeBtn.classList.add('inactive')
 
-        localStorage.setItem('currentTrip', JSON.stringify(tripDeets))
+        localStorage.setItem('toSave', JSON.stringify(true))
+        console.log('array length: '+tripsArr.length)
+    } else {
+        const removeBtn = document.querySelector('#remove-trip')
+
+        removeBtn.addEventListener('click', removeTrip)
+        removeBtn.classList.remove('inactive')
+        localStorage.setItem('toSave', JSON.stringify(false))
     }
 }
 
@@ -173,8 +197,9 @@ function saveTrip(evt) {
             const removeBtn = document.querySelector('#remove-trip')
             removeBtn.addEventListener('click', removeTrip)
             removeBtn.classList.remove('inactive')
-
-            localStorage.removeItem('currentTrip')
+            //TODO: fix this localstorage nightmare
+            //localStorage.removeItem('currentTrip')
+            localStorage.setItem('toSave', false)
         })
         .catch(err => {
             console.log('error', err)
@@ -256,6 +281,9 @@ function removeTrip(evt) {
         sortTrips(amendedTrips)
         clearTripUi()
         tripDeets = {}
+        localStorage.removeItem('currentTrip')
+        localStorage.removeItem('toSave')
+        localStorage.removeItem('btnFocus')
     })
     .catch(err => {
         console.log('err', err)
