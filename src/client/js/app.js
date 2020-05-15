@@ -22,6 +22,7 @@ function clearTripUi() {
     document.querySelector('.dest-img').setAttribute('style', 'display: none')
     document.querySelector('.dest-weather').setAttribute('style', 'display: none')
     document.querySelector('#time-place').setAttribute('style', 'display: none')
+    document.querySelector('#disclaimer').setAttribute('style', 'display: none')
     document.querySelector('#start-prompt').removeAttribute('style')
 }
 
@@ -70,6 +71,15 @@ function deFocusList() {
     })
 }
 
+//called if navigated away from page or if server is down, grabs localstorage data to populate UI
+function localStore() {
+    if(localStorage.getItem('currentTrip')) {
+        tripDeets = JSON.parse(localStorage.getItem('currentTrip'))
+        const toSave = JSON.parse(localStorage.getItem('toSave'))
+        displayTrip(toSave)
+    }
+}
+
 //if formHandler - textfallback is called set a boolean to true so you can run an if statement
 //in checkDate to convert string date from dd/mm/yyyy => yyyy-mm-dd?
 function textTruthy() {
@@ -95,13 +105,8 @@ function init() {
 
     //hide default labels etc on startup
     clearTripUi()
-
     //checks to see if a displayed trip has been saved in browser storage, if so = display
-    if(localStorage.getItem('currentTrip')) {
-        tripDeets = JSON.parse(localStorage.getItem('currentTrip'))
-        const toSave = JSON.parse(localStorage.getItem('toSave'))
-        displayTrip(toSave)
-    }
+    localStore()
 
     //grab any saved trips, if any, and display on strt up of app
     getSavedTrips('http://localhost:3000/trips')
@@ -115,6 +120,11 @@ function init() {
     })
     .catch(err => {
         console.log('error', err)
+        document.querySelector('#btn-container').setAttribute('style', 'display: none')
+        document.querySelector('#submit-form').classList.add('inactive')
+        sortTrips(JSON.parse(localStorage.getItem('savedTrips')))
+        document.getElementById(localStorage.getItem('btnFocus')).setAttribute('style', ('border-color: #a805f3'))
+        localStore()
     })
 }
 
@@ -124,6 +134,7 @@ function displayTrip(saveable) {
     document.querySelector('.dest-img').removeAttribute('style')
     document.querySelector('.dest-weather').removeAttribute('style')
     document.querySelector('#time-place').removeAttribute('style')
+    document.querySelector('#disclaimer').removeAttribute('style')
     document.querySelector('#start-prompt').setAttribute('style', 'display: none')
 
     //grab dom elements
@@ -254,6 +265,8 @@ function sortTrips(arrOfTrips) {
     //clear list div and re-populate
     tripList.innerHTML = ''
     tripList.appendChild(tripFrag)
+    //store tripsArr if server goes down
+    localStorage.setItem('savedTrips', JSON.stringify(tripsArr))
 }
 
 //check on event that it's the target that we want

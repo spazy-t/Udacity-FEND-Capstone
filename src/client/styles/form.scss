@@ -7,10 +7,10 @@
     width: 100%;
     border-bottom: 2px solid #000;
 
-    @media (min-width: 768px) {
-        display: grid;
-        grid-template-columns: 1fr repeat(2, auto) 1fr;
-        padding: 20px 0;
+    .inactive {
+        border-color: #444;
+        color: #444;
+        pointer-events: none;
     }
 
     #btn-container {
@@ -20,12 +20,6 @@
         width: inherit;
         margin-bottom: 10px;
 
-        .inactive {
-            border-color: #444;
-            color: #444;
-            pointer-events: none;
-        }
-
         @media (min-width: 768px) {
             flex-direction: column;
             width: auto;
@@ -33,6 +27,12 @@
             grid-column: 3;
             justify-content: space-between;
         }
+    }
+
+    @media (min-width: 768px) {
+        display: grid;
+        grid-template-columns: 1fr repeat(2, auto) 1fr;
+        padding: 20px 0;
     }
 }
 
