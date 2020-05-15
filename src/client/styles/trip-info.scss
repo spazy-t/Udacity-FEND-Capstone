@@ -62,12 +62,14 @@ section {
             @media (min-width: 768px) {
                 grid-area: dw;
                 justify-self: flex-start;
-                min-width: 300px;
+                max-width: 300px;
                 font-size: 1.3em;
             }
 
             @media (min-width: 992px) {
                 margin-left: 50px;
+                min-width: 350px;
+                max-width: 380px;
                 font-size: 1.5em;
             }
 
@@ -75,6 +77,7 @@ section {
                 width: 100%;
                 margin: 0;
                 font-size: 1.8em;
+                justify-self: center;
             }
         }
 
@@ -171,13 +174,23 @@ section {
             }
         }
 
+        #disclaimer {
+            align-self: center;
+
+            @media (min-width: 768px) {
+                grid-area: disc;
+                justify-self: center;
+            }
+        }
+
         @media (min-width: 768px) {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, auto);
+            grid-template-rows: repeat(3, auto);
             grid-template-areas: 
             "img img"
-            "tp dw";
+            "tp dw"
+            "disc disc";
         }
 
         @media (min-width: 992px) {
@@ -189,7 +202,8 @@ section {
             grid-template-rows: repeat(2, 1fr);
             grid-template-areas: 
             "tp img"
-            "dw img";
+            "dw img"
+            "disc img";
             justify-content: center;
             padding: 15px 0;
         }

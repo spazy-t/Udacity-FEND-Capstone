@@ -133,13 +133,16 @@ function displayTrip(saveable) {
     const tempDegs = document.querySelector('#temp')
     const windDir = document.querySelector('#wind-dir')
     const wIcon = document.querySelector('#icon')
+    const disclaim = document.querySelector('#disclaimer')
 
+    countDown.removeAttribute('style')
+    disclaim.innerHTML = '(Current Weather)'
     //determines countdown days, if below 0 make countdown red
     const countDownNum = daysToGo(tripDeets.departure)
     if(countDownNum < 0) {
         countDown.setAttribute('style', 'color: red')
-    } else {
-        countDown.removeAttribute('style')
+    } else if(countDownNum >= 7) {
+        disclaim.innerHTML = '(Weather is up to 16 days from today)'
     }
 
     //poulates dom elements
@@ -196,7 +199,7 @@ function saveTrip(evt) {
             removeBtn.classList.remove('inactive')
             
             localStorage.setItem('toSave', JSON.stringify(false))
-            //loop over tripArr to match btn
+            //loop over tripArr to match btn and highlight it accordingly
             for (const [i, trip] of tripsArr.entries()) {
                 if(trip.city === tripDeets.city && trip.departure === tripDeets.departure) {
                     document.getElementById(i).setAttribute('style', ('border-color: #a805f3'))
