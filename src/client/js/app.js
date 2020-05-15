@@ -58,7 +58,7 @@ function showSavedHelper(tripBtn) {
     //take off purple border from previously selected before adding to currently selected
     deFocusList()
     tripBtn.setAttribute('style', ('border-color: #a805f3'))
-    //localStorage.setItem('btnFocus', tripBtn.id)
+    localStorage.setItem('btnFocus', tripBtn.id)
 
     //show saved trip
     displayTrip(false)
@@ -108,12 +108,9 @@ function init() {
     .then((storedTrips) => {
         if (storedTrips.length > 0) {
             sortTrips(storedTrips)
-        }
-    })
-    .then(() => {
-        if(localStorage.getItem('btnFocus')) {
-            const focusBtn = document.getElementById(localStorage.getItem('btnFocus'))
-            focusBtn.setAttribute('style', ('border-color: #a805f3'))
+            if(localStorage.getItem('btnFocus')){
+                document.getElementById(localStorage.getItem('btnFocus')).setAttribute('style', ('border-color: #a805f3'))
+            }
         }
     })
     .catch(err => {
@@ -172,8 +169,8 @@ function displayTrip(saveable) {
         saveBtn.classList.remove('inactive')
         removeBtn.classList.add('inactive')
 
+        localStorage.removeItem('btnFocus')
         localStorage.setItem('toSave', JSON.stringify(true))
-        console.log('array length: '+tripsArr.length)
     } else {
         const removeBtn = document.querySelector('#remove-trip')
 
@@ -197,9 +194,15 @@ function saveTrip(evt) {
             const removeBtn = document.querySelector('#remove-trip')
             removeBtn.addEventListener('click', removeTrip)
             removeBtn.classList.remove('inactive')
-            //TODO: fix this localstorage nightmare
-            //localStorage.removeItem('currentTrip')
-            localStorage.setItem('toSave', false)
+            
+            localStorage.setItem('toSave', JSON.stringify(false))
+            //loop over tripArr to match btn
+            for (const [i, trip] of tripsArr.entries()) {
+                if(trip.city === tripDeets.city && trip.departure === tripDeets.departure) {
+                    document.getElementById(i).setAttribute('style', ('border-color: #a805f3'))
+                    localStorage.setItem('btnFocus', i)
+                }
+            }
         })
         .catch(err => {
             console.log('error', err)
