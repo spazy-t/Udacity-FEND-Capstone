@@ -10,7 +10,12 @@
 
 ## Overview
 
-
+This is the final project (capstone) for the Udacity Front End Developer nanodegree course. It utilises three APIs (Geonames, WeatherBit, pixabay)
+to grab location, weather, and a picture of a destination specified via user input. The user enters either a city and or country into the form with a date and presses submit. If the date is valid and the destination can be found, the information is used by 'Geonames' to find the city/country and its latitude and longitude.This information is then passed to 'Weatherbit' to find the current weather conditions, if the trip is within seven days, or the forecast up to 16 days (limitation due to Weatherbit without subscription) time if more than seven days away. Once this data is retrieved the city name is used via 'pixabay' to find a location image. If one can't be found then the country name is used instead. The user can then either save the trip, which will then be saved server side, and displayed as a button above the main UI. Otherwise they can remove the trip and start again. Also, if they require, they can remove any saved trip by clicking on the relevant button and then the remove button.
+ 
+This project also includes other additional features as suggested by the project brief. Along with being able to save multiple trips, they are then ordered by departure date with the most imminent first and any expired trips at the end, which are styled differently. The use of weather icons has also been incorporated via a specified code from the WeatherBit API. And finally, local storage is used to hold currently displayed and saved trips should the user navigate away from the site or the server be disconnected.
+ 
+This project works across all current major screen sizes via responsive design methods and uses webpack in order to minify and automate its compatibility. Other technologies used include: SASS, HTML, JavaScript ES6, babel, jest unit testing, node.js, and express.
 
 ## Instructions
 
