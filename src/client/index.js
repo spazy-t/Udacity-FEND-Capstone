@@ -18,7 +18,7 @@ import './styles/footer.scss'
 //all icon images
 //https://github.com/gatsbyjs/gatsby/issues/3663 9/05/2020
 const req = require.context('./media/icons', false, /.*\.png$/);
-req.keys().forEach(function(key){
+req.keys().forEach(function(key) {
     req(key);
 });
 

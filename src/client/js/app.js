@@ -1,6 +1,9 @@
-//TODO: place globas in a globals.js where each has a function with nested let variables and getter / setters
+/**
+ * Globals
+ */
 //initial false boolean to be set true when input falls back to text input
 let textDateInput = false
+//holder for saved trips
 let tripsArr = []
 //global object to hold current trip details
 let tripDeets = {  
@@ -16,8 +19,7 @@ let tripDeets = {
 /**
  * Helpers
  */
-
-//clear trip info helper
+//clear trip UI helper
 function clearTripUi() {
     document.querySelector('.dest-img').setAttribute('style', 'display: none')
     document.querySelector('.dest-weather').setAttribute('style', 'display: none')
@@ -71,7 +73,7 @@ function deFocusList() {
     })
 }
 
-//called if navigated away from page or if server is down, grabs localstorage data to populate UI
+//called if navigated away from page or if server is down, grabs localStorage data to populate UI
 function localStore() {
     if(localStorage.getItem('currentTrip')) {
         tripDeets = JSON.parse(localStorage.getItem('currentTrip'))
@@ -89,7 +91,6 @@ function textTruthy() {
  /**
   * Main functions
   */
-
 function init() {
     document.querySelector('#submit-form').addEventListener('click', Client.handleSubmit)
     document.querySelector('.trip-list').addEventListener('click', showSavedTrip)
@@ -113,12 +114,13 @@ function init() {
     .then((storedTrips) => {
         if (storedTrips.length > 0) {
             sortTrips(storedTrips)
-            if(localStorage.getItem('btnFocus')){
+            if(localStorage.getItem('btnFocus')) {
                 document.getElementById(localStorage.getItem('btnFocus')).setAttribute('style', ('border-color: #a805f3'))
             }
         }
     })
     .catch(err => {
+        //server can't be reached so used localStorage to populate saved trips and main UI
         console.log('error', err)
         document.querySelector('#btn-container').setAttribute('style', 'display: none')
         document.querySelector('#submit-form').classList.add('inactive')
@@ -128,7 +130,7 @@ function init() {
     })
 }
 
-//called from various point to display current or selected trip
+//called from various points to display current or selected trip
 function displayTrip(saveable) {
     //make sure main elements are visible
     document.querySelector('.dest-img').removeAttribute('style')
@@ -145,7 +147,7 @@ function displayTrip(saveable) {
     const windDir = document.querySelector('#wind-dir')
     const wIcon = document.querySelector('#icon')
     const disclaim = document.querySelector('#disclaimer')
-
+    //removes red styling if present
     countDown.removeAttribute('style')
     disclaim.innerHTML = '(Current Weather)'
     //determines countdown days, if below 0 make countdown red
@@ -165,15 +167,14 @@ function displayTrip(saveable) {
     wIcon.setAttribute('src', `media/${tripDeets.weather.icon}.png`)
 
     //display image from stored url
-    console.log('app.js > displayImage: '+tripDeets.image)
     const imgTag = document.querySelector('.dest-img')
     imgTag.setAttribute('src', tripDeets.image)
 
     //saves displayed trip in local storage for user if they navigate away from page
     localStorage.setItem('currentTrip', JSON.stringify(tripDeets))
 
-    //as the trip search has worked and displays, allow it to be saved
-    if(saveable){
+    //as the trip search has worked and displays, allow it to be saved? Make available relevant form buttons
+    if(saveable) {
         const removeBtn = document.querySelector('#remove-trip')
         const saveBtn = document.querySelector('#save-trip')
 
@@ -197,18 +198,18 @@ function displayTrip(saveable) {
 //save current trip to server array via post method
 function saveTrip(evt) {
     evt.preventDefault()
-    console.log('save Trip')
+    //make sure data is present
     if (tripDeets.city != '') {
         sendTrip('http://localhost:3000/save-data', tripDeets)
         .then((allTrips) => {
             sortTrips(allTrips)
             evt.target.removeEventListener('click', saveTrip)
             evt.target.classList.add('inactive')
-
+            //after getting server saved trrips and sorting them make remove trip button usable
             const removeBtn = document.querySelector('#remove-trip')
             removeBtn.addEventListener('click', removeTrip)
             removeBtn.classList.remove('inactive')
-            
+            //save ability to remove to localstoreage incase of user navigating away
             localStorage.setItem('toSave', JSON.stringify(false))
             //loop over tripArr to match btn and highlight it accordingly
             for (const [i, trip] of tripsArr.entries()) {
@@ -225,17 +226,17 @@ function saveTrip(evt) {
     }
 }
 
-//sort returned array of saved trips into order via departure date and display
+//sort returned array of saved trips into order via departure date then display
 function sortTrips(arrOfTrips) {
     arrOfTrips.sort((a, b) => new Date(a.departure) - new Date(b.departure))
-
+    //if any negative countdown days add to negArr
     let negArr = []
     arrOfTrips.forEach(trip => {
         if(daysToGo(trip.departure) < 0) {
             negArr.push(trip)
         }
     })
-    //if any negative days to go found reverse order and add bak onto sorted array
+    //if any negative 'days to go' found reverse order and add onto sorted array
     //so we can display expired trips at back of list
     if (negArr.length >= 1) {
         negArr.reverse()
@@ -246,12 +247,11 @@ function sortTrips(arrOfTrips) {
     }
     //store sorted array in global to access later on item click
     tripsArr = arrOfTrips
-    console.log(arrOfTrips)
 
     //display arrOfTrips
     const tripList = document.querySelector('.trip-list')
     const tripFrag = document.createDocumentFragment()
-
+    //create dom element for each saved trip
     for (const [i, trip] of arrOfTrips.entries()) {
         const tripObj = document.createElement('p')
         const tripDepart = daysToGo(trip.departure)
@@ -269,13 +269,9 @@ function sortTrips(arrOfTrips) {
     localStorage.setItem('savedTrips', JSON.stringify(tripsArr))
 }
 
-//check on event that it's the target that we want
+//check click event that it's the target that we want
 function showSavedTrip(evt) {
     const listTarget = evt.target
-
-    console.log('show saved')
-    console.log(tripsArr.length)
-    console.log(tripsArr)
 
     //have to stringify and parse the tripsArr to avoid deep referencing
     //and having the entry overwritten when a new trip is searched
@@ -287,12 +283,10 @@ function showSavedTrip(evt) {
         showSavedHelper(evt.target.parentNode)
     }
 }
-
+//removes currently displayed trip from server
 function removeTrip(evt) {
     evt.target.classList.add('inactive')
     evt.target.removeEventListener('click', removeTrip)
-    console.log('remove trip:')
-    console.log(tripDeets)
 
     //call async to delete from server
     sendTrip('http://localhost:3000/delete-trip', tripDeets)
@@ -305,7 +299,7 @@ function removeTrip(evt) {
         localStorage.removeItem('btnFocus')
     })
     .catch(err => {
-        console.log('err', err)
+        console.log('error', err)
         alert('error deleting trip please try again')
     })
 }
@@ -313,7 +307,6 @@ function removeTrip(evt) {
 /**
  * async
  */
-
 //post route to save trip into server array
 const sendTrip = async (url = '', data = {}) => {
     const res = await fetch(url, {
@@ -328,7 +321,7 @@ const sendTrip = async (url = '', data = {}) => {
     try {
         const data = await res.json()
         return data
-    } catch (e){
+    } catch(e) {
         console.log('error', e)
     }
 }
@@ -340,7 +333,7 @@ const getSavedTrips = async (url = '') => {
     try {
         const data = await res.json()
         return data
-    } catch (e){
+    } catch(e) {
         console.log('error > getSavedTrips', e)
     }
 }

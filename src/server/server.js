@@ -7,7 +7,6 @@ const PixabayApi = require('node-pixabayclient')
 const dotenv = require('dotenv')
 dotenv.config()
 
-//const path = require('path')
 const express = require('express')
 
 //create express server
@@ -42,7 +41,6 @@ app.listen(3000, () => {
 //to the app. All using geocoder
 app.get('/geo/:place', (req, res) => {
     const geoPlace = req.params.place
-    console.log('geo place: '+geoPlace)
 
     geoApi.get('search', {
         q: geoPlace,
@@ -69,8 +67,6 @@ app.get('/current/:lat-:lng', (req, res) => {
         key: process.env.WB_KEY
     })
     .then((data) => {
-        console.log('weatherbit current data')
-        console.log(data)
         res.send(data)
     })
     .catch((error) => {
@@ -89,8 +85,6 @@ app.get('/forecast/:lat-:lng', (req, res) => {
         key: process.env.WB_KEY
     })
     .then((data) => {
-        console.log('weatherbit forecast data')
-        //console.log(data)
         res.send(data)
     })
     .catch((error) => {
@@ -142,7 +136,6 @@ app.post('/delete-trip', (req, res) => {
 
     for (let i = 0; i < tripsStored.length; i++) {
         if(JSON.stringify(tripsStored[i]) === JSON.stringify(toDelete)) {
-            console.log('delete time')
             tripsStored.splice(i, 1)
         }
     }
@@ -153,4 +146,5 @@ app.get('/trips', (req, res) => {
     res.send(tripsStored)
 })
 
+//export fro jest test
 module.exports = { app }
