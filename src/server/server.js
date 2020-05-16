@@ -47,7 +47,6 @@ app.get('/geo/:place', (req, res) => {
         maxRows: 5
     })
     .then((data) => {
-        console.log(data)
         res.send(data)
     })
     .catch((error) => {

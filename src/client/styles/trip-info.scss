@@ -40,6 +40,7 @@ section {
             grid-gap: 1em;
             margin: 0 15px;
             align-self: center;
+            font-size: 1.2em;
 
             #desc {
                 grid-area: desc;
@@ -125,7 +126,8 @@ section {
             }
 
             .dest {
-                margin-bottom: 15px;
+                margin: 10px 0 15px 0;
+                font-size: 1.2em;
             }
 
             .info-container {
