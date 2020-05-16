@@ -40,7 +40,7 @@ form {
     display: grid;
     padding-top: 25px;
     grid-template-columns: 1fr 2fr;
-    grid-template-rows: auto;
+    grid-template-rows: repeat(3, auto);
     grid-template-areas: 
     "lb1 inptOne"
     "lb2 inptTwo"
@@ -67,6 +67,7 @@ form {
         font-weight: 700;
         font-size: 1em;
         text-align: center;
+        border: none;
         border-bottom: 1px solid black;
 
         &:focus {
