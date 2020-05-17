@@ -1,24 +1,29 @@
-@import './base.scss';
+@import './global.scss';
 
 .form-container {
     display: flex;
     flex-direction: column;
     background: #777;
-    width: 100%;
     border-bottom: 2px solid #000;
+    margin-bottom: 5px;
 
     .inactive {
-        border-color: #444;
+        border-color: #444 !important;
         color: #444;
         pointer-events: none;
     }
 
     #btn-container {
+        width: auto;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
         width: inherit;
         margin-bottom: 10px;
+
+        button {
+            background: none;
+        }
 
         @media (min-width: 600px) {
             flex-direction: column;
@@ -29,80 +34,94 @@
         }
     }
 
+    form {
+        width: 100%;
+        display: grid;
+        grid-gap: 5px;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: repeat(3, auto);
+        grid-template-areas: 
+        "lbOne inptOne"
+        "lbTwo inptTwo"
+        "btn btn";
+        padding: 0 15px;
+        margin: 10px 0;
+    
+        #submit-form {
+            cursor: pointer;
+            grid-area: btn;
+            margin-top: 10px;
+
+            @media (min-width: 600px) {
+                margin: 10px 0 0 0;
+            }
+        }
+    
+        input {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: none;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1em;
+            text-align: center;
+            border: none;
+            border-bottom: 1px solid black;
+
+            #trip-date {
+                grid-area: inptTwo;
+            }
+        
+            #city {
+                grid-area: inptOne;
+            }
+    
+            &:focus {
+                outline-color: #000;
+                outline-style: dotted;
+            }
+    
+            &[type=submit] {
+                @extend button;
+    
+                @media (min-width: 600px) {
+                    margin: 0 10px;
+                }
+    
+                @media (min-width: 1200px) {
+                    margin: 0;
+                }
+            }
+    
+            @media (min-width: 1200px) {
+                font-size: 1em;
+            }
+        }
+    
+        label {
+            text-align: left;
+            font-family: inherit;
+    
+            &:first-child {
+                grid-area: lbOne;
+            }
+    
+            &:last-child {
+                grid-area: lbTwo;
+            }
+        }
+    
+        @media (min-width: 600px) {
+            padding: 0;
+            margin: 0;
+            grid-column: 2;
+        }
+    }
+
     @media (min-width: 600px) {
         display: grid;
         grid-template-columns: 1fr repeat(2, auto) 1fr;
         padding: 20px 0;
-    }
-}
-
-form {
-    display: grid;
-    padding-top: 25px;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: repeat(3, auto);
-    grid-template-areas: 
-    "lb1 inptOne"
-    "lb2 inptTwo"
-    "sub sub";
-    width: 100%;
-
-    #submit-form {
-        cursor: pointer;
-        grid-area: sub;
-    }
-
-    #trip-date {
-        grid-area: inptTwo;
-    }
-
-    #city {
-        grid-area: inptOne;
-    }
-
-    input {
-        margin: 0 10px 25px 0;
-        background: none;
-        font-family: inherit;
-        font-weight: 700;
-        font-size: 1em;
-        text-align: center;
-        border: none;
-        border-bottom: 1px solid black;
-
-        &:focus {
-            outline-color: #000;
-            outline-style: dotted;
-        }
-
-        &[type=submit] {
-            @extend button;
-            margin: 0 10px 15px 10px;
-
-            @media (min-width: 600px) {
-                margin: 0 10px;
-            }
-
-            @media (min-width: 1200px) {
-                margin: 0;
-            }
-        }
-
-        @media (min-width: 1200px) {
-            font-size: 1em;
-        }
-    }
-
-    label {
-        text-align: left;
-        margin: 0 10px;
-        font-family: inherit;
-        font-weight: 900;
-        font-size: 1em;
-    }
-
-    @media (min-width: 600px) {
-        padding: 0;
-        grid-column: 2;
     }
 }
